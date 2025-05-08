@@ -15,7 +15,7 @@ public class Operator {
 
     //Getters and setters
 
-    public void setName(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public class Operator {
         this.name=name;
     }
 
-    public String setName(){
+    public String getName(){
         return name;
     }
 }

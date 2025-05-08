@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/operator")
 public class OperatorController {
@@ -18,8 +20,12 @@ public class OperatorController {
     private OperatorRepository operatorRepository;
 
     @GetMapping
-    public String listOperator(Model model){
-        model.addAttribute("operatorList", operatorRepository.findAll());
+    public String listOperators(Model model) {
+        List<Operator> operatorList = operatorRepository.findAll();
+        if (operatorList.isEmpty()) {
+            System.out.println("No hay operarios para mostrar");
+        }
+        model.addAttribute("operatorList", operatorList);
         return "operator/list";
     }
 
