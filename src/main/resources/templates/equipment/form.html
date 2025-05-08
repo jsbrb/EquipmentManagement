@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Equipo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Formulario de Equipo</h1>
+    <form th:action="@{/equipment}" th:object="${equipment}" method="post">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+            <label for="serialNumber">Serie</label>
+            <input type="text" th:field="*{serialNumber}" class="form-control" id="serialNumber">
+        </div>
+        <div class="form-group">
+            <label for="brand">Marca</label>
+            <input type="text" th:field="*{brand}" class="form-control" id="brand">
+        </div>
+        <div class="form-group">
+            <label for="currentStatus">Estado</label>
+            <input type="text" th:field="*{currentStatus}" class="form-control" id="currentStatus">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+</body>
+</html>

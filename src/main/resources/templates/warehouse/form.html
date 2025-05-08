@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Almacén</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Formulario de Almacén</h1>
+    <form th:action="@{/warehouse}" th:object="${warehouse}" method="post">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+</body>
+</html>

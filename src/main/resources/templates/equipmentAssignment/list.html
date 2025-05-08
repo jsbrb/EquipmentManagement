@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Equipos Asignados</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1 class="mt-4">Lista de Equipos Asignados</h1>
+  <a href="/equipmentassignment/new" class="btn btn-primary">Nuevo Equipo</a>
+  <table class="table table-striped mt-3">
+    <thead>
+    <tr>
+      <th>Equipo</th>
+      <th>Operador</th>
+      <th>Obra</th>
+      <th>Almacén</th>
+      <th>Obra</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="equipmentassignment : ${equipmentassignmentList}">
+      <td th:text="${equipmentassignment.name}"></td>
+      <td th:text="${equipmentassignment.serialNumber}"></td>
+      <td th:text="${equipmentassignment.brand}"></td>
+      <td th:text="${equipmentassignment.currentStatus}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

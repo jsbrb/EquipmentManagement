@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Operarios</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Lista de Operarios</h1>
+    <a href="/operator/new" class="btn btn-primary">Nuevo Equipo</a>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nonbre</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="operator : ${operatorList}">
+            <td th:text="${operator.id}"></td>
+            <td th:text="${operator.name}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
