@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Operarios</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<head th:replace="~{fragments/layout :: head('Operarios')}"></head>
 <body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
 <div class="container">
     <h1 class="mt-4">Lista de Operarios</h1>
     <a href="/operator/new" class="btn btn-primary">Nuevo Equipo</a>
@@ -27,5 +24,6 @@
     <!-- Botón para volver al menú principal -->
     <a href="/" class="btn btn-secondary mt-3">Volver al Menú Principal</a>
 </div>
+<div th:replace="~{fragments/layout :: footer}"></div>
 </body>
 </html>

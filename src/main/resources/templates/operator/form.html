@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Nuevo Operario</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<head th:replace="~{fragments/layout :: head('Nuevo Operario')}"></head>
 <body>
 <div class="container">
     <h1 class="mt-4">Formulario de Operario</h1>
@@ -16,5 +12,6 @@
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
 </div>
+<div th:replace="~{fragments/layout :: footer}"></div>
 </body>
 </html>
