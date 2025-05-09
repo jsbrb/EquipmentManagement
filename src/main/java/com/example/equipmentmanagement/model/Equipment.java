@@ -11,7 +11,9 @@ public class Equipment {
     private String name;
     private String serialNumber;
     private String brand;
-    private String currentStatus;
+
+    @Enumerated(EnumType.STRING)
+    private EquipmentStatus currentStatus;
 
     @ManyToOne
     private Operator currentOperator;
@@ -22,8 +24,12 @@ public class Equipment {
     @ManyToOne
     private Warehouse warehouse;
 
-    //Getters and setters
+    // Constructor por defecto
+    public Equipment() {
+        this.currentStatus = EquipmentStatus.DISPONIBLE; // Estado inicial por defecto
+    }
 
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -56,11 +62,11 @@ public class Equipment {
         this.brand = brand;
     }
 
-    public String getCurrentStatus() {
+    public EquipmentStatus getCurrentStatus() {
         return currentStatus;
     }
 
-    public void setCurrentStatus(String currentStatus) {
+    public void setCurrentStatus(EquipmentStatus currentStatus) {
         this.currentStatus = currentStatus;
     }
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <title th:text="${title}">Título por defecto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <!--AGREGAR FUENTE PARA EL NAVBAR-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/images/logo.png" alt="Logo Elecnor">
+            <span class="ml-2">Gestión</span>
+        </a>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:classappend="${activePage == 'equipment' ? 'active' : ''}">
+                    <a class="nav-link" href="/equipment">Equipos</a>
+                </li>
+                <li class="nav-item" th:classappend="${activePage == 'operator' ? 'active' : ''}">
+                    <a class="nav-link" href="/operator">Operarios</a>
+                </li>
+                <li class="nav-item" th:classappend="${activePage == 'work' ? 'active' : ''}">
+                    <a class="nav-link" href="/work">Obras</a>
+                </li>
+                <li class="nav-item" th:classappend="${activePage == 'warehouse' ? 'active' : ''}">
+                    <a class="nav-link" href="/warehouse">Almacenes</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+</div>
+
+<div th:fragment="footer" class="footer-custom text-center mt-4 mb-4">
+    <small>© 2025 Mi Aplicación</small>
+</div>
+
+</body>
+</html>

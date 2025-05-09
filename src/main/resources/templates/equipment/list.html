@@ -1,35 +1,91 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Equipos</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<head th:replace="~{fragments/layout :: head('Lista de Equipos')}"></head>
 <body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
 <div class="container">
     <h1 class="mt-4">Lista de Equipos</h1>
     <a href="/equipment/new" class="btn btn-primary">Nuevo Equipo</a>
+
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Serie</th>
-            <th>Marca</th>
-            <th>Estado</th>
+            <th class="text-center">ID</th>
+            <th class="text-center">Nombre</th>
+            <th class="text-center">Serie</th>
+            <th class="text-center">Marca</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="equipment : ${equipmentList}">
-            <td th:text="${equipment.name}"></td>
-            <td th:text="${equipment.serialNumber}"></td>
-            <td th:text="${equipment.brand}"></td>
-            <td th:text="${equipment.currentStatus}"></td>
+            <td class="text-center" th:text="${equipment.id}"></td>
+            <td class="text-center" th:text="${equipment.name}"></td>
+            <td class="text-center" th:text="${equipment.serialNumber}"></td>
+            <td class="text-center" th:text="${equipment.brand}"></td>
+            <td class="text-center" th:text="${equipment.currentStatus}"></td>
+            <td class="text-center">
+                <a th:href="@{/equipment/edit/{id}(id=${equipment.id})}" class="btn btn-warning btn-sm">Editar</a>
+                <!-- Este botón abre el modal y pasa el ID -->
+                <button type="button"
+                        class="btn btn-danger btn-sm"
+                        data-toggle="modal"
+                        data-target="#confirmModal"
+                        th:attr="data-id=${equipment.id}">
+                    Eliminar
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>
 
-    <!-- Botón para volver al menú principal -->
     <a href="/" class="btn btn-secondary mt-3">Volver al Menú Principal</a>
 </div>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmación de Eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este equipo? Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <!-- Este formulario se actualizará dinámicamente con el ID del equipo -->
+                <form id="deleteForm" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Incluir jQuery, Popper.js y Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para manejar el Modal de eliminación -->
+<script>
+    // Obtener el ID del equipo cuando se hace clic en "Eliminar"
+    $('#confirmModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botón que activó el modal
+        var equipmentId = button.data('id'); // Extraer el ID
+
+        var form = $(this).find('#deleteForm');
+        form.attr('action', '/equipment/delete/' + equipmentId); // Establecer URL del formulario
+    });
+</script>
+
 </body>
 </html>

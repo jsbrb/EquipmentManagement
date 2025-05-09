@@ -1,18 +1,29 @@
 package com.example.equipmentmanagement.dto;
 
+import com.example.equipmentmanagement.model.EquipmentStatus;
+
 public class EquipmentDTO {
+
     private Long id;
     private String name;
     private String serialNumber;
     private String brand;
-    private String currentStatus;
-    private Long currentOperatorId;
-    private Long currentWorkId;
-    private Long warehouseId;
+    private EquipmentStatus currentStatus;
 
-    //Getter y Setters
+    // Constructor por defecto (sin parámetros)
+    public EquipmentDTO() {
+    }
 
+    // Constructor
+    public EquipmentDTO(Long id, String name, String serialNumber, String brand, EquipmentStatus currentStatus) {
+        this.id = id;
+        this.name = name;
+        this.serialNumber = serialNumber;
+        this.brand = brand;
+        this.currentStatus = currentStatus;
+    }
 
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -45,35 +56,11 @@ public class EquipmentDTO {
         this.brand = brand;
     }
 
-    public String getCurrentStatus() {
+    public EquipmentStatus getCurrentStatus() {
         return currentStatus;
     }
 
-    public void setCurrentStatus(String currentStatus) {
+    public void setCurrentStatus(EquipmentStatus currentStatus) {
         this.currentStatus = currentStatus;
-    }
-
-    public Long getCurrentOperatorId() {
-        return currentOperatorId;
-    }
-
-    public void setCurrentOperatorId(Long currentOperatorId) {
-        this.currentOperatorId = currentOperatorId;
-    }
-
-    public Long getCurrentWorkId() {
-        return currentWorkId;
-    }
-
-    public void setCurrentWorkId(Long currentWorkId) {
-        this.currentWorkId = currentWorkId;
-    }
-
-    public Long getWarehouseId() {
-        return warehouseId;
-    }
-
-    public void setWarehouseId(Long warehouseId) {
-        this.warehouseId = warehouseId;
     }
 }

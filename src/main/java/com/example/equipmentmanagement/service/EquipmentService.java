@@ -1,62 +1,90 @@
 package com.example.equipmentmanagement.service;
 
 import com.example.equipmentmanagement.dto.EquipmentDTO;
+import com.example.equipmentmanagement.mapper.EquipmentMapper;
 import com.example.equipmentmanagement.model.Equipment;
-import com.example.equipmentmanagement.repository.OperatorRepository;
-import com.example.equipmentmanagement.repository.WorkRepository;
-import com.example.equipmentmanagement.repository.WarehouseRepository;
+import com.example.equipmentmanagement.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EquipmentService {
 
-    // Inyección de dependencias de repositorios
-    private final OperatorRepository operatorRepository;
-    private final WorkRepository workRepository;
-    private final WarehouseRepository warehouseRepository;
-
     @Autowired
-    public EquipmentService(OperatorRepository operatorRepository, WorkRepository workRepository, WarehouseRepository warehouseRepository) {
-        this.operatorRepository = operatorRepository;
-        this.workRepository = workRepository;
-        this.warehouseRepository = warehouseRepository;
+    private EquipmentRepository equipmentRepository;
+
+    // Obtener todos los equipos
+    public List<EquipmentDTO> getAllEquipments() {
+        List<Equipment> equipments = equipmentRepository.findAll();
+        return equipments.stream().map(equipment -> new EquipmentDTO(
+                equipment.getId(),
+                equipment.getName(),
+                equipment.getSerialNumber(),
+                equipment.getBrand(),
+                equipment.getCurrentStatus()
+        )).collect(Collectors.toList());
     }
 
-    // Método de conversión a DTO
-    public EquipmentDTO toDTO(Equipment equipment) {
-        EquipmentDTO dto = new EquipmentDTO();
-        dto.setId(equipment.getId());
-        dto.setName(equipment.getName());
-        dto.setSerialNumber(equipment.getSerialNumber());
-        dto.setBrand(equipment.getBrand());
-        dto.setCurrentStatus(equipment.getCurrentStatus());
-        if (equipment.getCurrentOperator() != null) {
-            dto.setCurrentOperatorId(equipment.getCurrentOperator().getId());
-        }
-        if (equipment.getCurrentWork() != null) {
-            dto.setCurrentWorkId(equipment.getCurrentWork().getId());
-        }
-        if (equipment.getWarehouse() != null) {
-            dto.setWarehouseId(equipment.getWarehouse().getId());
-        }
-        return dto;
+    // Obtener un equipo por ID
+    public EquipmentDTO getEquipmentById(Long id) {
+        Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipment not found"));
+        return new EquipmentDTO(
+                equipment.getId(),
+                equipment.getName(),
+                equipment.getSerialNumber(),
+                equipment.getBrand(),
+                equipment.getCurrentStatus()
+        );
     }
 
-    // Método de conversión de DTO a entidad
-    public Equipment toEntity(EquipmentDTO dto) {
+    // Crear un nuevo equipo
+    public EquipmentDTO createEquipment(EquipmentDTO equipmentDTO) {
+        if (equipmentDTO.getId() != null) {
+            throw new RuntimeException("No se puede crear un equipo con un ID existente");
+        }
+
         Equipment equipment = new Equipment();
-        equipment.setId(dto.getId());
-        equipment.setName(dto.getName());
-        equipment.setSerialNumber(dto.getSerialNumber());
-        equipment.setBrand(dto.getBrand());
-        equipment.setCurrentStatus(dto.getCurrentStatus());
+        equipment.setName(equipmentDTO.getName());
+        equipment.setSerialNumber(equipmentDTO.getSerialNumber());
+        equipment.setBrand(equipmentDTO.getBrand());
+        equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
 
-        // Cargar las entidades correspondientes por ID
-        equipment.setCurrentOperator(operatorRepository.findById(dto.getCurrentOperatorId()).orElse(null));
-        equipment.setCurrentWork(workRepository.findById(dto.getCurrentWorkId()).orElse(null));
-        equipment.setWarehouse(warehouseRepository.findById(dto.getWarehouseId()).orElse(null));
+        Equipment savedEquipment = equipmentRepository.save(equipment);
+        return new EquipmentDTO(
+                savedEquipment.getId(),
+                savedEquipment.getName(),
+                savedEquipment.getSerialNumber(),
+                savedEquipment.getBrand(),
+                savedEquipment.getCurrentStatus()
+        );
+    }
 
-        return equipment;
+    // Actualizar un equipo
+    public EquipmentDTO updateEquipment(Long id, EquipmentDTO equipmentDTO) {
+        Equipment equipment = equipmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+
+        // Solo actualizamos los valores que vienen en el DTO
+        equipment.setName(equipmentDTO.getName());
+        equipment.setSerialNumber(equipmentDTO.getSerialNumber());
+        equipment.setBrand(equipmentDTO.getBrand());
+
+        Equipment updatedEquipment = equipmentRepository.save(equipment);  // Guardamos el equipo actualizado
+        return new EquipmentDTO(
+                updatedEquipment.getId(),
+                updatedEquipment.getName(),
+                updatedEquipment.getSerialNumber(),
+                updatedEquipment.getBrand(),
+                updatedEquipment.getCurrentStatus()
+        );
+    }
+
+    // Eliminar un equipo
+    public void deleteEquipment(Long id) {
+        Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipment not found"));
+        equipmentRepository.delete(equipment);
     }
 }
