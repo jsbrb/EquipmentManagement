@@ -19,13 +19,7 @@ public class EquipmentService {
     // Obtener todos los equipos
     public List<EquipmentDTO> getAllEquipments() {
         List<Equipment> equipments = equipmentRepository.findAll();
-        return equipments.stream().map(equipment -> new EquipmentDTO(
-                equipment.getId(),
-                equipment.getName(),
-                equipment.getSerialNumber(),
-                equipment.getBrand(),
-                equipment.getCurrentStatus()
-        )).collect(Collectors.toList());
+        return equipments.stream().map(EquipmentMapper::toDTO).collect(Collectors.toList());
     }
 
     // Obtener un equipo por ID

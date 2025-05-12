@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class EquipmentMapper {
 
     // Convertir Equipment a EquipmentDTO
-    public EquipmentDTO toDTO(Equipment equipment) {
+    public static EquipmentDTO toDTO(Equipment equipment) {
         return new EquipmentDTO(
                 equipment.getId(),
                 equipment.getName(),

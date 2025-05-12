@@ -1,6 +1,7 @@
 package com.example.equipmentmanagement.service;
 
 import com.example.equipmentmanagement.dto.OperatorDTO;
+import com.example.equipmentmanagement.mapper.OperatorMapper;
 import com.example.equipmentmanagement.model.Operator;
 import com.example.equipmentmanagement.repository.OperatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,7 @@ public class OperatorService {
     //Obtener todos los operarios
     public List<OperatorDTO> getAllOperators(){
         List<Operator> operators= operatorRepository.findAll();
-        return operators.stream().map(operator -> new OperatorDTO(
-                operator.getId(),
-                operator.getName()
-        )).collect(Collectors.toList());
+        return operators.stream().map(OperatorMapper::toDTO).collect(Collectors.toList());
     }
 
     //Obtener un usuario por ID

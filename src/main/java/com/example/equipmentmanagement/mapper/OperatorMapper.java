@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class OperatorMapper {
 
     //Convertir Operator a Operator DTO
-    public OperatorDTO toDTO(Operator operator){
+    public static OperatorDTO toDTO(Operator operator){
         return new OperatorDTO(
                 operator.getId(),
                 operator.getName()
