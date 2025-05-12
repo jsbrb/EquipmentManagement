@@ -1,14 +1,13 @@
 package com.example.equipmentmanagement.controller;
 
+import com.example.equipmentmanagement.dto.OperatorDTO;
 import com.example.equipmentmanagement.model.Operator;
 import com.example.equipmentmanagement.repository.OperatorRepository;
+import com.example.equipmentmanagement.service.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,28 +16,63 @@ import java.util.List;
 public class OperatorController {
 
     @Autowired
-    private OperatorRepository operatorRepository;
+    private OperatorService operatorService;
 
     @GetMapping
     public String listOperators(Model model) {
-        List<Operator> operatorList = operatorRepository.findAll();
-        if (operatorList.isEmpty()) {
-            System.out.println("No hay operarios para mostrar");
-        }
+        List<OperatorDTO> operatorList = operatorService.getAllOperators();
         model.addAttribute("operatorList", operatorList);
+        model.addAttribute("activePage", "operartor");
         return "operator/list";
     }
 
+    // Mostrar formulario para crear un nuevo operario
     @GetMapping("/new")
-    public String showForm(Model model){
-        model.addAttribute("operator", new Operator());
+    public String showCreateForm(Model model){
+        model.addAttribute("operator", new OperatorDTO());
+        model.addAttribute("activePage", "operator");
         return "operator/form";
     }
 
+    // Mostrar formulario para editar un operario existente
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        OperatorDTO operatorDTO = operatorService.getOperatorById(id);
+        if (operatorDTO == null) {
+            model.addAttribute("error", "Operario no encontrado.");
+            return "redirect:/operator";
+        }
+        model.addAttribute("operator", operatorDTO);
+        model.addAttribute("activePage", "operator");
+        return "operator/form";
+    }
+
+    // Guardar operario (crear o actualizar)
     @PostMapping
-    public String saveOperator(@ModelAttribute Operator operator){
-        operatorRepository.save(operator);
+    public String saveOperator(@ModelAttribute OperatorDTO operatorDTO, Model model){
+        if (operatorDTO.getName() == null || operatorDTO.getName().isEmpty()) {
+            model.addAttribute("error", "Todos los campos son obligatorios.");
+            model.addAttribute("operator", operatorDTO);
+            return "operator/form";
+        }
+
+        if (operatorDTO.getId() != null) {
+            operatorService.updateOperator(operatorDTO.getId(), operatorDTO);
+        } else {
+            operatorService.createOperator(operatorDTO);
+        }
+
         return "redirect:/operator";
     }
 
+    // Eliminar operario
+    @PostMapping("/delete/{id}")
+    public String deleteOperator(@PathVariable("id") Long id, Model model) {
+        try {
+            operatorService.deleteOperator(id);
+        } catch (Exception e) {
+            model.addAttribute("error", "Operario no encontrado.");
+        }
+        return "redirect:/operator";
+    }
 }

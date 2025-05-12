@@ -5,18 +5,29 @@
 <div th:replace="~{fragments/layout :: navbar}"></div>
 <div class="container">
     <h1 class="mt-4">Lista de Operarios</h1>
-    <a href="/operator/new" class="btn btn-primary">Nuevo Equipo</a>
+    <a href="/operator/new" class="btn btn-primary">Nuevo Operario</a>
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Nombre</th>
+            <th class="text-center">ID</th>
+            <th class="text-center">Nombre</th>
+            <th class="text-center">Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="operator : ${operatorList}">
-            <td th:text="${operator.id}"></td>
-            <td th:text="${operator.name}"></td>
+            <td class="text-center" th:text="${operator.id}"></td>
+            <td class="text-center" th:text="${operator.name}"></td>
+            <td class="text-center">
+                <a th:href="@{/operator/edit/{id}(id=${operator.id})}" class="btn btn-warning btn-sm">Editar</a>
+                <button type="button"
+                        class="btn btn-danger btn-sm"
+                        data-toggle="modal"
+                        data-target="#confirmModal"
+                        th:attr="data-id=${operator.id}">
+                    Eliminar
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -25,5 +36,44 @@
     <a href="/" class="btn btn-secondary mt-3">Volver al Menú Principal</a>
 </div>
 <div th:replace="~{fragments/layout :: footer}"></div>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmación de Eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este operario? Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <form id="deleteForm" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts necesarios -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para asignar URL al formulario de eliminación -->
+<script>
+    $('#confirmModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var operatorId = button.data('id');
+        var form = $(this).find('#deleteForm');
+        form.attr('action', '/operator/delete/' + operatorId);
+    });
+</script>
+
 </body>
 </html>

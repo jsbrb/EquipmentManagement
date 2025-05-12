@@ -5,6 +5,10 @@
 <div class="container">
     <h1 class="mt-4">Formulario de Operario</h1>
     <form th:action="@{/operator}" th:object="${operator}" method="post">
+
+        <!-- Campo oculto para el ID -->
+        <input type="hidden" th:field="*{id}" />
+
         <div class="form-group">
             <label for="name">Nombre</label>
             <input type="text" th:field="*{name}" class="form-control" id="name">
