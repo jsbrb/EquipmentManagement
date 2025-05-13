@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -33,8 +35,16 @@ public class EquipmentAssignmentController {
         return "equipmentAssignment/list"; // Nombre de la vista: assignments.html
     }
 
+
     @GetMapping("/new")
     public String newAssignmentForm(Model model) {
+
+        // Verifica que los servicios devuelvan datos
+        System.out.println("Equipos: " + equipmentService.getAllEquipments());
+        System.out.println("Operadores: " + operatorService.getAllOperators());
+        System.out.println("Obras: " + workService.getAllWorks());
+        System.out.println("Almacenes: " + warehouseService.getAllWarehouses());
+
         model.addAttribute("assignment", new EquipmentAssignmentDTO());
         model.addAttribute("equipments", equipmentService.getAllEquipments());
         model.addAttribute("operators", operatorService.getAllOperators());

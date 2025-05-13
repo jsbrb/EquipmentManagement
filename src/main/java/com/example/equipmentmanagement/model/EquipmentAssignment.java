@@ -11,15 +11,19 @@ public class EquipmentAssignment {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "equipment_id")
     private Equipment equipment;
 
     @ManyToOne
+    @JoinColumn(name = "operator_id")
     private Operator operator;
 
     @ManyToOne
+    @JoinColumn(name = "work_id")
     private Work work;
 
     @ManyToOne
+    @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 
     private String workOrderNumber;

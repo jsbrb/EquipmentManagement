@@ -21,6 +21,9 @@ public class EquipmentAssignmentDTO {
     private LocalDateTime assignedAt;
     private LocalDateTime returnedAt;
 
+    // Campo para la fecha formateada
+    private String formattedAssignedAt;
+
     // --- Getters y Setters ---
     public Long getId() {
         return id;
@@ -108,6 +111,14 @@ public class EquipmentAssignmentDTO {
 
     public void setReturnedAt(LocalDateTime returnedAt) {
         this.returnedAt = returnedAt;
+    }
+
+    public String getFormattedAssignedAt() {
+        return formattedAssignedAt;
+    }
+
+    public void setFormattedAssignedAt(String formattedAssignedAt) {
+        this.formattedAssignedAt = formattedAssignedAt;
     }
 }
 

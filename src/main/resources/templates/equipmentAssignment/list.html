@@ -31,7 +31,7 @@
       <td class="text-center align-middle" th:text="${assignment.operatorName}"></td>
       <td class="text-center align-middle" th:text="${assignment.workId}"></td>
       <td class="text-center align-middle" th:text="${assignment.warehouseName}"></td>
-      <td class="text-center align-middle" th:text="${#dates.format(assignment.assignedAt, 'dd/MM/yyyy HH:mm')}"></td>
+      <td class="text-center align-middle" th:text="${assignment.formattedAssignedAt}"></td>
       <td class="text-center align-middle" th:text="${assignment.returnedAt != null ? #dates.format(assignment.returnedAt, 'dd/MM/yyyy HH:mm') : '—'}"></td>
       <td class="text-center align-middle">
         <!-- Mostrar botón de "Registrar Devolución" si aún no se ha devuelto -->

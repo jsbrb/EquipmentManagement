@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,9 @@ public class EquipmentAssignmentService {
 
     @Autowired
     private EquipmentAssignmentMapper mapper;
+
+    // Crear un formateador con el formato que estás utilizando
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     // Obtener todas las asignaciones
     public List<EquipmentAssignmentDTO> getAllAssignments() {
@@ -69,7 +73,15 @@ public class EquipmentAssignmentService {
                 .orElseThrow(() -> new RuntimeException("Trabajo no encontrado")));
         assignment.setWarehouse(warehouseRepository.findById(dto.getWarehouseId())
                 .orElseThrow(() -> new RuntimeException("Almacén no encontrado")));
-        assignment.setAssignedAt(LocalDateTime.now());
+
+        // Asignar la fecha actual
+        LocalDateTime assignedAt = LocalDateTime.now();
+        assignment.setAssignedAt(assignedAt);
+
+        // Formatear la fecha antes de asignarla al DTO
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String formattedAssignedAt = assignedAt.format(formatter);  // Formateamos la fecha
+        dto.setFormattedAssignedAt(formattedAssignedAt);  // Asignamos la fecha formateada al DTO
 
         // Cambiar estado del equipo a EN_USO
         equipment.setCurrentStatus(EquipmentStatus.EN_USO);
@@ -79,8 +91,9 @@ public class EquipmentAssignmentService {
         assignmentRepository.save(assignment);
         equipmentRepository.save(equipment);
 
-        return mapper.toDTO(assignment);
+        return dto; // Devolver el DTO con la fecha formateada
     }
+
 
     // Registrar devolución del equipo
     public EquipmentAssignmentDTO returnAssignment(Long assignmentId) {

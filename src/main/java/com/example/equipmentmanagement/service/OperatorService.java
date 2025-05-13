@@ -19,6 +19,7 @@ public class OperatorService {
     //Obtener todos los operarios
     public List<OperatorDTO> getAllOperators(){
         List<Operator> operators= operatorRepository.findAll();
+        System.out.println("Operadores cargados: " + operators);
         return operators.stream().map(OperatorMapper::toDTO).collect(Collectors.toList());
     }
 

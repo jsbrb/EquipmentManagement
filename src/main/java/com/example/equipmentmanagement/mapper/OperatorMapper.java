@@ -18,8 +18,8 @@ public class OperatorMapper {
     //Convertir OperatorDTO a Operator
     public Operator toEntity(OperatorDTO operatorDTO){
         Operator operator= new Operator();
-        operator.setId(operator.getId());
-        operator.setName(operator.getName());
+        operator.setId(operatorDTO.getId());
+        operator.setName(operatorDTO.getName());
 
         return operator;
     }

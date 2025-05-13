@@ -41,29 +41,26 @@ public class EquipmentAssignmentMapper {
         dto.setAssignedAt(assignment.getAssignedAt());
         dto.setReturnedAt(assignment.getReturnedAt());
 
-        Equipment equipment = assignment.getEquipment();
-        if (equipment != null) {
-            dto.setEquipmentId(equipment.getId());
-            dto.setEquipmentName(equipment.getName());
+        if (assignment.getEquipment() != null) {
+            dto.setEquipmentId(assignment.getEquipment().getId());
+            dto.setEquipmentName(assignment.getEquipment().getName());
         }
 
-        Operator operator = assignment.getOperator();
-        if (operator != null) {
-            dto.setOperatorId(operator.getId());
-            dto.setOperatorName(operator.getName());
+        if (assignment.getOperator() != null) {
+            dto.setOperatorId(assignment.getOperator().getId());
+            dto.setOperatorName(assignment.getOperator().getName());
         }
 
-        Work work = assignment.getWork();
-        if (work != null) {
-            dto.setWorkId(work.getId());
+        if (assignment.getWork() != null) {
+            dto.setWorkId(assignment.getWork().getId());
         }
 
-        Warehouse warehouse = assignment.getWarehouse();
-        if (warehouse != null) {
-            dto.setWarehouseId(warehouse.getId());
-            dto.setWarehouseName(warehouse.getName());
+        if (assignment.getWarehouse() != null) {
+            dto.setWarehouseId(assignment.getWarehouse().getId());
+            dto.setWarehouseName(assignment.getWarehouse().getName());
         }
 
         return dto;
     }
+
 }

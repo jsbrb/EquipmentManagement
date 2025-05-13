@@ -1,10 +1,7 @@
 package com.example.equipmentmanagement;
 
-import com.example.equipmentmanagement.model.Equipment;
-import com.example.equipmentmanagement.model.EquipmentStatus;
-import com.example.equipmentmanagement.model.Subcategory;
-import com.example.equipmentmanagement.repository.EquipmentRepository;
-import com.example.equipmentmanagement.repository.SubcategoryRepository;
+import com.example.equipmentmanagement.model.*;
+import com.example.equipmentmanagement.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -217,6 +214,62 @@ public class EquipmentManagementApplication {
 		};
 	}
 
+	@Bean
+	public CommandLineRunner loadInitialOperators(OperatorRepository operatorRepository) {
+		return args -> {
+			// Verifica si ya existen operarios para evitar duplicados
+			if (operatorRepository.count() == 0) {
+				String[] names = {"Juan Pérez", "Ana García", "Carlos López", "Laura Martínez", "Pedro Sánchez"};
+
+				for (String fullName : names) {
+					String[] parts = fullName.split(" ");
+					String firstName = parts[0];
+					String lastName = parts[1];
+
+					Operator operator = new Operator();
+					operator.setName(firstName + " " + lastName); // Podrías separarlos si lo deseas, pero por ahora es un solo campo
+
+					// Guardamos el operario en la base de datos
+					operatorRepository.save(operator);
+				}
+			}
+		};
+	}
+
+
+	@Bean
+	public CommandLineRunner preloadWarehouseData(WorkRepository workRepository) {
+		return args -> {
+			// Verificar si ya existe una obra con ese nombre
+			if (workRepository.count() == 0) {
+				Work work = new Work();
+				work.setName("80600");
+				work.setLocation("Ubicación desconocida"); // Puedes ajustar la ubicación si lo necesitas
+
+				// Guardamos la obra en la base de datos
+				workRepository.save(work);
+			}
+		};
+	}
+
+	@Bean
+	public CommandLineRunner preloadWarehouse(WarehouseRepository warehouseRepository) {
+		return args -> {
+			// Verificar si ya existe un almacén
+			if (warehouseRepository.count() == 0) {
+				Warehouse warehouse = new Warehouse();
+				warehouse.setName("Almacén Principal");
+				warehouse.setLocation("Ubicación desconocida"); // Puedes cambiar esta ubicación si lo deseas
+
+				// Guardamos el almacén en la base de datos
+				warehouseRepository.save(warehouse);
+			}
+		};
+	}
 
 
 }
+
+
+
+

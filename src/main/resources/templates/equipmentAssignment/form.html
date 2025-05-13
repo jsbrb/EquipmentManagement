@@ -5,9 +5,9 @@
 <div class="container">
     <h1 class="mt-4">Nueva Asignación de Equipo</h1>
 
-    <form th:action="@{/assignments}" th:object="${assignment}" method="post">
+    <form th:action="@{/equipmentAssignment}" th:object="${assignment}" method="post">
 
-        <!-- Campo oculto para el ID si es necesario -->
+    <!-- Campo oculto para el ID si es necesario -->
         <input type="hidden" th:field="*{id}" />
 
         <div class="form-group">
