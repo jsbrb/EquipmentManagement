@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Registrar Devolución de Equipo')}"></head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Registrar Devolución de Equipo</h1>
+
+    <p>¿Estás seguro de que deseas registrar la devolución del siguiente equipo?</p>
+
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Equipo:</strong> <span th:text="${assignment.equipmentName}">Excavadora</span></li>
+        <li class="list-group-item"><strong>Operario:</strong> <span th:text="${assignment.operatorName}">Juan Pérez</span></li>
+        <li class="list-group-item"><strong>Obra:</strong> <span th:text="${assignment.workId}">Obra 123</span></li>
+        <li class="list-group-item"><strong>Almacén:</strong> <span th:text="${assignment.warehouseName}">Almacén Central</span></li>
+        <li class="list-group-item"><strong>Fecha Asignación:</strong> <span th:text="${#dates.format(assignment.assignedAt, 'dd/MM/yyyy HH:mm')}">01/01/2025 08:00</span></li>
+    </ul>
+
+    <form th:action="@{'/assignments/' + ${assignment.id} + '/return'}" method="post" class="mt-4">
+        <button type="submit" class="btn btn-danger">Confirmar Devolución</button>
+        <a th:href="@{/equipmentAssignment}" class="btn btn-secondary ml-2">Cancelar</a>
+    </form>
+</div>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+
+</body>
+</html>

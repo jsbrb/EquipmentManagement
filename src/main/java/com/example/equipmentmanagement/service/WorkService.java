@@ -72,4 +72,10 @@ public class WorkService {
         Work work = workRepository.findById(id).orElseThrow(()->new RuntimeException("Work not found"));
         workRepository.delete(work);
     }
+
+    public Work findById(Long id) {
+        return workRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Trabajo no encontrado con id: " + id));
+    }
+
 }

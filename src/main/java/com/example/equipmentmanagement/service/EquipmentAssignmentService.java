@@ -1,0 +1,108 @@
+package com.example.equipmentmanagement.service;
+
+import com.example.equipmentmanagement.dto.EquipmentAssignmentDTO;
+import com.example.equipmentmanagement.mapper.EquipmentAssignmentMapper;
+import com.example.equipmentmanagement.mapper.EquipmentMapper;
+import com.example.equipmentmanagement.model.Equipment;
+import com.example.equipmentmanagement.model.EquipmentAssignment;
+import com.example.equipmentmanagement.model.EquipmentStatus;
+import com.example.equipmentmanagement.repository.EquipmentAssignmentRepository;
+import com.example.equipmentmanagement.repository.EquipmentRepository;
+import com.example.equipmentmanagement.repository.OperatorRepository;
+import com.example.equipmentmanagement.repository.WarehouseRepository;
+import com.example.equipmentmanagement.repository.WorkRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class EquipmentAssignmentService {
+
+    @Autowired
+    private EquipmentAssignmentRepository assignmentRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private OperatorRepository operatorRepository;
+
+    @Autowired
+    private WorkRepository workRepository;
+
+    @Autowired
+    private WarehouseRepository warehouseRepository;
+
+    @Autowired
+    private EquipmentAssignmentMapper mapper;
+
+    // Obtener todas las asignaciones
+    public List<EquipmentAssignmentDTO> getAllAssignments() {
+        return assignmentRepository.findAll().stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Método para obtener una asignación por ID
+    public EquipmentAssignmentDTO getAssignmentById(Long id) {
+        EquipmentAssignment assignment = assignmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Asignación no encontrada"));
+        return mapper.toDTO(assignment);
+    }
+
+    // Crear una asignación
+    public EquipmentAssignmentDTO createAssignment(EquipmentAssignmentDTO dto) {
+        Equipment equipment = equipmentRepository.findById(dto.getEquipmentId())
+                .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+        if (equipment.getCurrentStatus() == EquipmentStatus.EN_USO) {
+            throw new RuntimeException("Este equipo ya está en uso.");
+        }
+
+        EquipmentAssignment assignment = new EquipmentAssignment();
+        assignment.setEquipment(equipment);
+        assignment.setOperator(operatorRepository.findById(dto.getOperatorId())
+                .orElseThrow(() -> new RuntimeException("Operario no encontrado")));
+        assignment.setWork(workRepository.findById(dto.getWorkId())
+                .orElseThrow(() -> new RuntimeException("Trabajo no encontrado")));
+        assignment.setWarehouse(warehouseRepository.findById(dto.getWarehouseId())
+                .orElseThrow(() -> new RuntimeException("Almacén no encontrado")));
+        assignment.setAssignedAt(LocalDateTime.now());
+
+        // Cambiar estado del equipo a EN_USO
+        equipment.setCurrentStatus(EquipmentStatus.EN_USO);
+        equipment.setCurrentOperator(assignment.getOperator());
+        equipment.setCurrentWork(assignment.getWork());
+
+        assignmentRepository.save(assignment);
+        equipmentRepository.save(equipment);
+
+        return mapper.toDTO(assignment);
+    }
+
+    // Registrar devolución del equipo
+    public EquipmentAssignmentDTO returnAssignment(Long assignmentId) {
+        EquipmentAssignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new RuntimeException("Asignación no encontrada"));
+
+        if (assignment.getReturnedAt() != null) {
+            throw new RuntimeException("Este equipo ya ha sido devuelto.");
+        }
+
+        assignment.setReturnedAt(LocalDateTime.now());
+
+        // Cambiar estado del equipo a DISPONIBLE
+        Equipment equipment = assignment.getEquipment();
+        equipment.setCurrentStatus(EquipmentStatus.DISPONIBLE);
+        equipment.setCurrentOperator(null);
+        equipment.setCurrentWork(null);
+
+        assignmentRepository.save(assignment);
+        equipmentRepository.save(equipment);
+
+        return mapper.toDTO(assignment);
+    }
+}
+

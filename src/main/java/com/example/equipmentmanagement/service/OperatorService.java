@@ -67,4 +67,10 @@ public class OperatorService {
         Operator operator=operatorRepository.findById(id).orElseThrow(()-> new RuntimeException("Operario not found"));
         operatorRepository.delete(operator);
     }
+
+    public Operator findById(Long id) {
+        return operatorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Operario no encontrado con id: " + id));
+    }
+
 }

@@ -73,4 +73,10 @@ public class WarehouseService {
         warehouseRepository.delete(warehouse);
     }
 
+    public Warehouse findById(Long id) {
+        return warehouseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Almacén no encontrado con id: " + id));
+    }
+
+
 }

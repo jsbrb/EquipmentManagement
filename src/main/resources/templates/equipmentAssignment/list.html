@@ -1,36 +1,100 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Equipos Asignados</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<head th:replace="~{fragments/layout :: head('Asignaciones de Equipos')}"></head>
 <body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
 <div class="container">
-  <h1 class="mt-4">Lista de Equipos Asignados</h1>
-  <a href="/equipmentassignment/new" class="btn btn-primary">Nuevo Equipo</a>
+  <h1 class="mt-4">Asignaciones de Equipos</h1>
+
+  <!-- Botón para agregar una nueva asignación -->
+  <a href="/equipmentAssignment/new" class="btn btn-primary mb-3">Nueva Asignación</a>
+
+  <!-- Tabla con las asignaciones -->
   <table class="table table-striped mt-3">
     <thead>
     <tr>
-      <th>Equipo</th>
-      <th>Operador</th>
-      <th>Obra</th>
-      <th>Almacén</th>
-      <th>Obra</th>
+      <th class="text-center align-middle">ID</th>
+      <th class="text-center align-middle">Equipo</th>
+      <th class="text-center align-middle">Operario</th>
+      <th class="text-center align-middle">Obra</th>
+      <th class="text-center align-middle">Almacén</th>
+      <th class="text-center align-middle">Fecha Asignación</th>
+      <th class="text-center align-middle">Fecha Devolución</th>
+      <th class="text-center align-middle">Acciones</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="equipmentassignment : ${equipmentassignmentList}">
-      <td th:text="${equipmentassignment.name}"></td>
-      <td th:text="${equipmentassignment.serialNumber}"></td>
-      <td th:text="${equipmentassignment.brand}"></td>
-      <td th:text="${equipmentassignment.currentStatus}"></td>
+    <tr th:each="assignment : ${assignments}">
+      <td class="text-center align-middle" th:text="${assignment.id}"></td>
+      <td class="text-center align-middle" th:text="${assignment.equipmentName}"></td>
+      <td class="text-center align-middle" th:text="${assignment.operatorName}"></td>
+      <td class="text-center align-middle" th:text="${assignment.workId}"></td>
+      <td class="text-center align-middle" th:text="${assignment.warehouseName}"></td>
+      <td class="text-center align-middle" th:text="${#dates.format(assignment.assignedAt, 'dd/MM/yyyy HH:mm')}"></td>
+      <td class="text-center align-middle" th:text="${assignment.returnedAt != null ? #dates.format(assignment.returnedAt, 'dd/MM/yyyy HH:mm') : '—'}"></td>
+      <td class="text-center align-middle">
+        <!-- Mostrar botón de "Registrar Devolución" si aún no se ha devuelto -->
+        <a th:if="${assignment.returnedAt == null}"
+           th:href="@{'/equipmentAssignment/' + ${assignment.id} + '/return'}"
+           class="btn btn-warning btn-sm">Registrar Devolución</a>
+      </td>
     </tr>
     </tbody>
   </table>
 
-  <!-- Botón para volver al menú principal -->
   <a href="/" class="btn btn-secondary mt-3">Volver al Menú Principal</a>
 </div>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+
+<!-- Modal de Confirmación para la devolución -->
+<div class="modal fade" id="confirmReturnModal" tabindex="-1" role="dialog" aria-labelledby="confirmReturnModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmReturnModalLabel">Confirmación de Devolución</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas registrar la devolución de este equipo? Esta acción no se puede deshacer.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <form id="returnForm" method="post" style="display:inline;">
+          <button type="submit" class="btn btn-success">Registrar Devolución</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Incluir jQuery, Popper.js y Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para manejar el Modal de devolución -->
+<script>
+  // Obtener el ID de la asignación cuando se hace clic en "Registrar Devolución"
+  $('#confirmReturnModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Botón que activó el modal
+      var assignmentId = button.data('id'); // Extraer el ID
+
+      var form = $(this).find('#returnForm');
+      form.attr('action', '/equipmentAssignment/' + assignmentId + '/return'); // Establecer URL del formulario
+  });
+</script>
+
+<style>
+  /* Asegurarse de que las celdas de la cabecera se ajusten bien en varias líneas */
+  th {
+      word-wrap: break-word;
+      white-space: normal;
+  }
+</style>
+
 </body>
 </html>

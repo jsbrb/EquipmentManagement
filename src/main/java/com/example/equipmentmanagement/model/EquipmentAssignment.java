@@ -2,6 +2,8 @@ package com.example.equipmentmanagement.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class EquipmentAssignment {
     @Id
@@ -20,14 +22,12 @@ public class EquipmentAssignment {
     @ManyToOne
     private Warehouse warehouse;
 
-    private String assignedAt;
+    private String workOrderNumber;
 
-    private  String returnedAt;
+    private LocalDateTime assignedAt;
+    private LocalDateTime returnedAt;
 
-    private String status;
-
-    //Getters and Setters
-
+    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -69,27 +69,27 @@ public class EquipmentAssignment {
         this.warehouse = warehouse;
     }
 
-    public String getAssignedAt() {
+    public String getWorkOrderNumber() {
+        return workOrderNumber;
+    }
+
+    public void setWorkOrderNumber(String workOrderNumber) {
+        this.workOrderNumber = workOrderNumber;
+    }
+
+    public LocalDateTime getAssignedAt() {
         return assignedAt;
     }
 
-    public void setAssignedAt(String assignedAt) {
+    public void setAssignedAt(LocalDateTime assignedAt) {
         this.assignedAt = assignedAt;
     }
 
-    public String getReturnedAt() {
+    public LocalDateTime getReturnedAt() {
         return returnedAt;
     }
 
-    public void setReturnedAt(String returnedAt) {
+    public void setReturnedAt(LocalDateTime returnedAt) {
         this.returnedAt = returnedAt;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

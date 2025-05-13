@@ -103,4 +103,10 @@ public class EquipmentService {
         equipmentRepository.delete(equipment);
     }
 
+    public Equipment findById(Long id) {
+        return equipmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Equipo no encontrado con id: " + id));
+    }
+
+
 }
