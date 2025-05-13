@@ -10,6 +10,10 @@
         <input type="hidden" th:field="*{id}" />
 
         <div class="form-group">
+            <label for="code">Código</label>
+            <input type="text" th:field="*{code}" class="form-control" id="code" required>
+        </div>
+        <div class="form-group">
             <label for="name">Nombre</label>
             <input type="text" th:field="*{name}" class="form-control" id="name" required>
         </div>
@@ -18,8 +22,14 @@
             <input type="text" th:field="*{serialNumber}" class="form-control" id="serialNumber" required>
         </div>
         <div class="form-group">
-            <label for="brand">Marca</label>
-            <input type="text" th:field="*{brand}" class="form-control" id="brand" required>
+            <label for="subcategories">Subcategorías</label>
+            <select id="subcategories" name="subcategories" th:field="*{subcategory}" class="form-control">
+                <option th:each="subcat : ${subcategoryList}"
+                        th:value="${subcat.id}"
+                        th:text="${subcat.name}"
+                        th:selected="${equipment.subcategory != null} ? ${equipment.subcategory == subcat} : false">
+                </option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a href="/equipment" class="btn btn-secondary">Cancelar</a>

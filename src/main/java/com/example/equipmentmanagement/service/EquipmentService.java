@@ -1,12 +1,16 @@
 package com.example.equipmentmanagement.service;
 
 import com.example.equipmentmanagement.dto.EquipmentDTO;
+import com.example.equipmentmanagement.dto.SubcategoryDTO;
 import com.example.equipmentmanagement.mapper.EquipmentMapper;
 import com.example.equipmentmanagement.model.Equipment;
+import com.example.equipmentmanagement.model.Subcategory;
 import com.example.equipmentmanagement.repository.EquipmentRepository;
+import com.example.equipmentmanagement.repository.SubcategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,20 +20,24 @@ public class EquipmentService {
     @Autowired
     private EquipmentRepository equipmentRepository;
 
+    @Autowired
+    private SubcategoryRepository subcategoryRepository;
+
     // Obtener todos los equipos
     public List<EquipmentDTO> getAllEquipments() {
-        List<Equipment> equipments = equipmentRepository.findAll();
+        List<Equipment> equipments = equipmentRepository.findAllWithSubcategories();
         return equipments.stream().map(EquipmentMapper::toDTO).collect(Collectors.toList());
     }
 
     // Obtener un equipo por ID
     public EquipmentDTO getEquipmentById(Long id) {
-        Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipment not found"));
+        Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
         return new EquipmentDTO(
                 equipment.getId(),
                 equipment.getName(),
                 equipment.getSerialNumber(),
-                equipment.getBrand(),
+                equipment.getCode(),
+                equipment.getSubcategories().stream().map(sub -> new SubcategoryDTO(sub.getId(), sub.getName())).collect(Collectors.toList()), // Convertir a DTO
                 equipment.getCurrentStatus()
         );
     }
@@ -40,10 +48,16 @@ public class EquipmentService {
             throw new RuntimeException("No se puede crear un equipo con un ID existente");
         }
 
+        // Asignar las subcategorías
+        List<Subcategory> subcategories = equipmentDTO.getSubcategory().stream()
+                .map(subDTO -> subcategoryRepository.findById(subDTO.getId()).orElseThrow(() -> new RuntimeException("Subcategoría no encontrada")))
+                .collect(Collectors.toList());
+
         Equipment equipment = new Equipment();
         equipment.setName(equipmentDTO.getName());
         equipment.setSerialNumber(equipmentDTO.getSerialNumber());
-        equipment.setBrand(equipmentDTO.getBrand());
+        equipment.setCode(equipmentDTO.getCode());
+        equipment.setSubcategories(new HashSet<>(subcategories)); // Asignar subcategorías
         equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
 
         Equipment savedEquipment = equipmentRepository.save(equipment);
@@ -51,34 +65,42 @@ public class EquipmentService {
                 savedEquipment.getId(),
                 savedEquipment.getName(),
                 savedEquipment.getSerialNumber(),
-                savedEquipment.getBrand(),
+                savedEquipment.getCode(),
+                savedEquipment.getSubcategories().stream().map(sub -> new SubcategoryDTO(sub.getId(), sub.getName())).collect(Collectors.toList()), // Convertir a DTO
                 savedEquipment.getCurrentStatus()
         );
     }
 
     // Actualizar un equipo
     public EquipmentDTO updateEquipment(Long id, EquipmentDTO equipmentDTO) {
-        Equipment equipment = equipmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+        Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
 
-        // Solo actualizamos los valores que vienen en el DTO
+        // Asignar las subcategorías
+        List<Subcategory> subcategories = equipmentDTO.getSubcategory().stream()
+                .map(subDTO -> subcategoryRepository.findById(subDTO.getId()).orElseThrow(() -> new RuntimeException("Subcategoría no encontrada")))
+                .collect(Collectors.toList());
+
         equipment.setName(equipmentDTO.getName());
         equipment.setSerialNumber(equipmentDTO.getSerialNumber());
-        equipment.setBrand(equipmentDTO.getBrand());
+        equipment.setCode(equipmentDTO.getCode());
+        equipment.setSubcategories(new HashSet<>(subcategories)); // Asignar subcategorías
+        equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
 
-        Equipment updatedEquipment = equipmentRepository.save(equipment);  // Guardamos el equipo actualizado
+        Equipment updatedEquipment = equipmentRepository.save(equipment);
         return new EquipmentDTO(
                 updatedEquipment.getId(),
                 updatedEquipment.getName(),
                 updatedEquipment.getSerialNumber(),
-                updatedEquipment.getBrand(),
+                updatedEquipment.getCode(),
+                updatedEquipment.getSubcategories().stream().map(sub -> new SubcategoryDTO(sub.getId(), sub.getName())).collect(Collectors.toList()), // Convertir a DTO
                 updatedEquipment.getCurrentStatus()
         );
     }
 
     // Eliminar un equipo
     public void deleteEquipment(Long id) {
-        Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipment not found"));
+        Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
         equipmentRepository.delete(equipment);
     }
+
 }

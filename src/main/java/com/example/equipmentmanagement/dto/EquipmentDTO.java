@@ -2,12 +2,15 @@ package com.example.equipmentmanagement.dto;
 
 import com.example.equipmentmanagement.model.EquipmentStatus;
 
+import java.util.List;
+
 public class EquipmentDTO {
 
     private Long id;
     private String name;
     private String serialNumber;
-    private String brand;
+    private String code;
+    private List<SubcategoryDTO> subcategory;
     private EquipmentStatus currentStatus;
 
     // Constructor por defecto (sin parámetros)
@@ -15,11 +18,12 @@ public class EquipmentDTO {
     }
 
     // Constructor
-    public EquipmentDTO(Long id, String name, String serialNumber, String brand, EquipmentStatus currentStatus) {
+    public EquipmentDTO(Long id, String name, String serialNumber, String code, List<SubcategoryDTO> subcategory, EquipmentStatus currentStatus) {
         this.id = id;
         this.name = name;
         this.serialNumber = serialNumber;
-        this.brand = brand;
+        this.code=code;
+        this.subcategory = subcategory;
         this.currentStatus = currentStatus;
     }
 
@@ -48,12 +52,12 @@ public class EquipmentDTO {
         this.serialNumber = serialNumber;
     }
 
-    public String getBrand() {
-        return brand;
+    public List<SubcategoryDTO> getSubcategory() {   // Getter que devuelve una lista
+        return subcategory;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setSubcategory(List<SubcategoryDTO> subcategory) {   // Setter que acepta una lista
+        this.subcategory = subcategory;
     }
 
     public EquipmentStatus getCurrentStatus() {
@@ -62,5 +66,13 @@ public class EquipmentDTO {
 
     public void setCurrentStatus(EquipmentStatus currentStatus) {
         this.currentStatus = currentStatus;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

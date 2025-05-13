@@ -20,7 +20,14 @@ table th {
 }
 
 table td {
+    word-wrap: break-word;
+    max-width: 200px;
     text-align: center;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
 }
 
 .navbar {

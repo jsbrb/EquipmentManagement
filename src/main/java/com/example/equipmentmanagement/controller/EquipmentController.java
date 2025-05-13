@@ -2,6 +2,7 @@ package com.example.equipmentmanagement.controller;
 
 import com.example.equipmentmanagement.dto.EquipmentDTO;
 import com.example.equipmentmanagement.service.EquipmentService;
+import com.example.equipmentmanagement.service.SubcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,9 @@ public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
 
+    @Autowired
+    private SubcategoryService subcategoryService;
+
     // Listar todos los equipos
     @GetMapping
     public String listEquipments(Model model) {
@@ -29,6 +33,7 @@ public class EquipmentController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("equipment", new EquipmentDTO());
+        model.addAttribute("subcategoryList", subcategoryService.getAllSubcategories());
         model.addAttribute("activePage", "equipment");
         return "equipment/form";
     }
@@ -42,6 +47,7 @@ public class EquipmentController {
             return "redirect:/equipment";
         }
         model.addAttribute("equipment", equipmentDTO);
+        model.addAttribute("subcategoryList", subcategoryService.getAllSubcategories()); // nuevo
         model.addAttribute("activePage", "equipment");
         return "equipment/form";
     }
@@ -49,8 +55,8 @@ public class EquipmentController {
     @PostMapping
     public String saveEquipment(@ModelAttribute EquipmentDTO equipmentDTO, Model model) {
         if (equipmentDTO.getName() == null || equipmentDTO.getName().isEmpty()
-                || equipmentDTO.getSerialNumber() == null || equipmentDTO.getSerialNumber().isEmpty()
-                || equipmentDTO.getBrand() == null || equipmentDTO.getBrand().isEmpty()) {
+                || equipmentDTO.getSerialNumber() == null || equipmentDTO.getSerialNumber().isEmpty() || equipmentDTO.getCode() == null || equipmentDTO.getCode().isEmpty()
+                || equipmentDTO.getSubcategory() == null || equipmentDTO.getSubcategory().isEmpty()) {  // Validar lista no vacía
             model.addAttribute("error", "Todos los campos son obligatorios.");
             model.addAttribute("equipment", equipmentDTO);
             return "equipment/form";
@@ -64,6 +70,7 @@ public class EquipmentController {
 
         return "redirect:/equipment";
     }
+
 
 
     // Eliminar un equipo

@@ -2,6 +2,9 @@ package com.example.equipmentmanagement.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Equipment {
     @Id
@@ -10,7 +13,15 @@ public class Equipment {
 
     private String name;
     private String serialNumber;
-    private String brand;
+    private String code;
+
+    @ManyToMany
+    @JoinTable(
+            name = "equipment_subcategory",
+            joinColumns = @JoinColumn(name = "equipment_id"),
+            inverseJoinColumns = @JoinColumn(name = "subcategory_id")
+    )
+    private Set<Subcategory> subcategories = new HashSet<>();  // Usamos un Set para evitar duplicados
 
     @Enumerated(EnumType.STRING)
     private EquipmentStatus currentStatus;
@@ -54,12 +65,12 @@ public class Equipment {
         this.serialNumber = serialNumber;
     }
 
-    public String getBrand() {
-        return brand;
+    public Set<Subcategory> getSubcategories() {
+        return subcategories;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setSubcategories(Set<Subcategory> subcategories) {
+        this.subcategories = subcategories;
     }
 
     public EquipmentStatus getCurrentStatus() {
@@ -92,5 +103,13 @@ public class Equipment {
 
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
