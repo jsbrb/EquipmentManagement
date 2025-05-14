@@ -4,6 +4,7 @@ import com.example.equipmentmanagement.dto.EquipmentDTO;
 import com.example.equipmentmanagement.dto.SubcategoryDTO;
 import com.example.equipmentmanagement.mapper.EquipmentMapper;
 import com.example.equipmentmanagement.model.Equipment;
+import com.example.equipmentmanagement.model.EquipmentStatus;
 import com.example.equipmentmanagement.model.Subcategory;
 import com.example.equipmentmanagement.repository.EquipmentRepository;
 import com.example.equipmentmanagement.repository.SubcategoryRepository;
@@ -108,5 +109,9 @@ public class EquipmentService {
                 .orElseThrow(() -> new RuntimeException("Equipo no encontrado con id: " + id));
     }
 
+    //Función para listar todos los equipos que estén DISPONIBLES
+    public List<Equipment> findAvailableEquipments() {
+        return equipmentRepository.findByCurrentStatus(EquipmentStatus.DISPONIBLE);
+    }
 
 }

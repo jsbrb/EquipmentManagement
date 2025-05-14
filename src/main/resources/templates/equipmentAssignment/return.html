@@ -8,17 +8,17 @@
     <p>¿Estás seguro de que deseas registrar la devolución del siguiente equipo?</p>
 
     <ul class="list-group">
-        <li class="list-group-item"><strong>Equipo:</strong> <span th:text="${assignment.equipmentName}">Excavadora</span></li>
-        <li class="list-group-item"><strong>Operario:</strong> <span th:text="${assignment.operatorName}">Juan Pérez</span></li>
-        <li class="list-group-item"><strong>Obra:</strong> <span th:text="${assignment.workId}">Obra 123</span></li>
-        <li class="list-group-item"><strong>Almacén:</strong> <span th:text="${assignment.warehouseName}">Almacén Central</span></li>
+        <li class="list-group-item"><strong>Equipo:</strong> <span th:text="${assignment.equipmentName}"></span></li>
+        <li class="list-group-item"><strong>Operario:</strong> <span th:text="${assignment.operatorName}"></span></li>
+        <li class="list-group-item"><strong>Obra:</strong> <span th:text="${assignment.workId}"></span></li>
+        <li class="list-group-item"><strong>Almacén:</strong> <span th:text="${assignment.warehouseName}"></span></li>
         <li class="list-group-item"><strong>Fecha Asignación:</strong>
             <span th:text="${assignment.formattedAssignedAt}"></span>
         </li>
 
     </ul>
 
-    <form th:action="@{'/assignments/' + ${assignment.id} + '/return'}" method="post" class="mt-4">
+    <form th:action="@{'/equipmentAssignment/' + ${assignment.id} + '/return'}" method="post" class="mt-4">
         <button type="submit" class="btn btn-danger">Confirmar Devolución</button>
         <a th:href="@{/equipmentAssignment}" class="btn btn-secondary ml-2">Cancelar</a>
     </form>

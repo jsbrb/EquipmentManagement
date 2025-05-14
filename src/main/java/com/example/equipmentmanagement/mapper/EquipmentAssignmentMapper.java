@@ -6,6 +6,8 @@ import com.example.equipmentmanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class EquipmentAssignmentMapper {
 
@@ -40,6 +42,13 @@ public class EquipmentAssignmentMapper {
         dto.setId(assignment.getId());
         dto.setAssignedAt(assignment.getAssignedAt());
         dto.setReturnedAt(assignment.getReturnedAt());
+
+        // Formatear la fecha de asignación antes de asignarla al DTO
+        if (assignment.getAssignedAt() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String formattedAssignedAt = assignment.getAssignedAt().format(formatter);
+            dto.setFormattedAssignedAt(formattedAssignedAt);  // Asignamos la fecha formateada al DTO
+        }
 
         if (assignment.getEquipment() != null) {
             dto.setEquipmentId(assignment.getEquipment().getId());

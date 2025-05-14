@@ -46,7 +46,7 @@ public class EquipmentAssignmentController {
         System.out.println("Almacenes: " + warehouseService.getAllWarehouses());
 
         model.addAttribute("assignment", new EquipmentAssignmentDTO());
-        model.addAttribute("equipments", equipmentService.getAllEquipments());
+        model.addAttribute("equipments", equipmentService.findAvailableEquipments());
         model.addAttribute("operators", operatorService.getAllOperators());
         model.addAttribute("works", workService.getAllWorks());
         model.addAttribute("warehouses", warehouseService.getAllWarehouses());

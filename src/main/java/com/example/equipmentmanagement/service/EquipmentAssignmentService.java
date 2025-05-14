@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,7 @@ public class EquipmentAssignmentService {
     public List<EquipmentAssignmentDTO> getAllAssignments() {
         return assignmentRepository.findAll().stream()
                 .map(mapper::toDTO)
+                .sorted(Comparator.comparing(EquipmentAssignmentDTO::getAssignedAt).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +81,6 @@ public class EquipmentAssignmentService {
         assignment.setAssignedAt(assignedAt);
 
         // Formatear la fecha antes de asignarla al DTO
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String formattedAssignedAt = assignedAt.format(formatter);  // Formateamos la fecha
         dto.setFormattedAssignedAt(formattedAssignedAt);  // Asignamos la fecha formateada al DTO
 
