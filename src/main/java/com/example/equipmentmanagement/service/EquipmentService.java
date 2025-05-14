@@ -11,6 +11,7 @@ import com.example.equipmentmanagement.repository.SubcategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -112,6 +113,44 @@ public class EquipmentService {
     //Función para listar todos los equipos que estén DISPONIBLES
     public List<Equipment> findAvailableEquipments() {
         return equipmentRepository.findByCurrentStatus(EquipmentStatus.DISPONIBLE);
+    }
+
+    public List<EquipmentDTO> filterAndSort(String search, String status, String sortField, String direction) {
+        List<Equipment> equipments;
+
+        // Si hay un filtro de estado
+        if (status != null && !status.isEmpty()) {
+            EquipmentStatus equipmentStatus = EquipmentStatus.valueOf(status.toUpperCase());
+            equipments = equipmentRepository.findByCurrentStatus(equipmentStatus);
+        } else {
+            equipments = equipmentRepository.findAllWithSubcategories();
+        }
+
+        // Si hay un filtro de búsqueda por nombre
+        if (search != null && !search.isEmpty()) {
+            equipments = equipments.stream()
+                    .filter(equipment -> equipment.getName().toLowerCase().contains(search.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        // Ordenar
+        if ("name".equalsIgnoreCase(sortField)) {
+            if ("ASC".equalsIgnoreCase(direction)) {
+                equipments.sort(Comparator.comparing(Equipment::getName));
+            } else {
+                equipments.sort(Comparator.comparing(Equipment::getName).reversed());
+            }
+        } else if ("status".equalsIgnoreCase(sortField)) {
+            if ("ASC".equalsIgnoreCase(direction)) {
+                equipments.sort(Comparator.comparing(Equipment::getCurrentStatus));
+            } else {
+                equipments.sort(Comparator.comparing(Equipment::getCurrentStatus).reversed());
+            }
+        }
+
+        return equipments.stream()
+                .map(EquipmentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
 }

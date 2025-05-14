@@ -8,6 +8,26 @@
     <h1 class="mt-4">Lista de Equipos</h1>
     <a href="/equipment/new" class="btn btn-primary">Nuevo Equipo</a>
 
+    <!-- Filtro y Ordenamiento -->
+    <form th:action="@{/equipment}" method="get" class="form-inline mt-3 mb-3">
+        <input type="text" name="search" th:value="${search}" class="form-control mr-2" placeholder="Buscar por nombre">
+        <select name="status" class="form-control mr-2">
+            <option value="" th:selected="${status == null}">Todos los estados</option>
+            <option value="DISPONIBLE" th:selected="${status == 'DISPONIBLE'}">Disponible</option>
+            <option value="EN_USO" th:selected="${status == 'EN_USO'}">No Disponible</option>
+        </select>
+        <select name="sortField" class="form-control mr-2">
+            <option value="name" th:selected="${sortField == 'name'}">Nombre</option>
+            <option value="status" th:selected="${sortField == 'status'}">Estado</option>
+        </select>
+        <select name="direction" class="form-control mr-2">
+            <option value="ASC" th:selected="${direction == 'ASC'}">Ascendente</option>
+            <option value="DESC" th:selected="${direction == 'DESC'}">Descendente</option>
+        </select>
+        <button type="submit" class="btn btn-secondary">Filtrar</button>
+    </form>
+
+    <!-- Tabla de Equipos -->
     <table class="table table-striped mt-3">
         <thead>
         <tr>
@@ -21,23 +41,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="equipment : ${equipmentList}">
+        <tr th:each="equipment : ${equipments}">
             <td class="text-center align-middle" th:text="${equipment.id}"></td>
             <td class="text-center align-middle" th:text="${equipment.name}"></td>
             <td class="text-center align-middle" th:text="${equipment.code}"></td>
             <td class="text-center align-middle" th:text="${equipment.serialNumber}"></td>
-            <td class="text-center align-middle"
-                th:text="${#lists.isEmpty(equipment.subcategory) ? 'Sin categoría' : equipment.subcategory.iterator().next().name}">
-            </td>
+            <td class="text-center align-middle" th:text="${#lists.isEmpty(equipment.subcategory) ? 'Sin categoría' : equipment.subcategory.iterator().next().name}"></td>
             <td class="text-center align-middle" th:text="${equipment.currentStatus}"></td>
             <td class="text-center align-middle">
                 <a th:href="@{/equipment/edit/{id}(id=${equipment.id})}" class="btn btn-warning btn-sm">Editar</a>
-                <!-- Este botón abre el modal y pasa el ID -->
-                <button type="button"
-                        class="btn btn-danger btn-sm"
-                        data-toggle="modal"
-                        data-target="#confirmModal"
-                        th:attr="data-id=${equipment.id}">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmModal" th:attr="data-id=${equipment.id}">
                     Eliminar
                 </button>
             </td>
@@ -48,46 +61,19 @@
     <a href="/" class="btn btn-secondary mt-3">Volver al Menú Principal</a>
 </div>
 
+<!-- Modal de Confirmación -->
 <div th:replace="~{fragments/layout :: footer}"></div>
 
-<!-- Modal de Confirmación -->
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">Confirmación de Eliminación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar este equipo? Esta acción no se puede deshacer.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <!-- Este formulario se actualizará dinámicamente con el ID del equipo -->
-                <form id="deleteForm" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Incluir jQuery, Popper.js y Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!-- Script para manejar el Modal de eliminación -->
 <script>
-    // Obtener el ID del equipo cuando se hace clic en "Eliminar"
     $('#confirmModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Botón que activó el modal
-        var equipmentId = button.data('id'); // Extraer el ID
-
+        var button = $(event.relatedTarget);
+        var equipmentId = button.data('id');
         var form = $(this).find('#deleteForm');
-        form.attr('action', '/equipment/delete/' + equipmentId); // Establecer URL del formulario
+        form.attr('action', '/equipment/delete/' + equipmentId);
     });
 </script>
 

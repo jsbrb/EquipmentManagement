@@ -20,13 +20,22 @@ public class EquipmentController {
     @Autowired
     private SubcategoryService subcategoryService;
 
-    // Listar todos los equipos
+    // Listar todos los equipos con filtros y ordenamientos
     @GetMapping
-    public String listEquipments(Model model) {
-        List<EquipmentDTO> equipmentList = equipmentService.getAllEquipments();
-        model.addAttribute("equipmentList", equipmentList);
-        model.addAttribute("activePage", "equipment");
-        return "equipment/list";
+    public String listEquipments(@RequestParam(required = false) String search,
+                                 @RequestParam(required = false) String status,
+                                 @RequestParam(defaultValue = "name") String sortField,
+                                 @RequestParam(defaultValue = "ASC") String direction,
+                                 Model model) {
+        List<EquipmentDTO> filteredEquipments = equipmentService.filterAndSort(search, status, sortField, direction);
+
+        model.addAttribute("equipments", filteredEquipments);
+        model.addAttribute("search", search);
+        model.addAttribute("status", status);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("direction", direction);
+
+        return "equipment/list"; // Vista Thymeleaf correspondiente
     }
 
     // Mostrar formulario para crear un nuevo equipo
