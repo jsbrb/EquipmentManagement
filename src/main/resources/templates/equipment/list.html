@@ -22,15 +22,15 @@
         </thead>
         <tbody>
         <tr th:each="equipment : ${equipmentList}">
-            <td class="text-center" th:text="${equipment.id}"></td>
-            <td class="text-center" th:text="${equipment.name}"></td>
-            <td class="text-center" th:text="${equipment.code}"></td>
-            <td class="text-center" th:text="${equipment.serialNumber}"></td>
-            <td class="text-center"
+            <td class="text-center align-middle" th:text="${equipment.id}"></td>
+            <td class="text-center align-middle" th:text="${equipment.name}"></td>
+            <td class="text-center align-middle" th:text="${equipment.code}"></td>
+            <td class="text-center align-middle" th:text="${equipment.serialNumber}"></td>
+            <td class="text-center align-middle"
                 th:text="${#lists.isEmpty(equipment.subcategory) ? 'Sin categoría' : equipment.subcategory.iterator().next().name}">
             </td>
-            <td class="text-center" th:text="${equipment.currentStatus}"></td>
-            <td class="text-center">
+            <td class="text-center align-middle" th:text="${equipment.currentStatus}"></td>
+            <td class="text-center align-middle">
                 <a th:href="@{/equipment/edit/{id}(id=${equipment.id})}" class="btn btn-warning btn-sm">Editar</a>
                 <!-- Este botón abre el modal y pasa el ID -->
                 <button type="button"
