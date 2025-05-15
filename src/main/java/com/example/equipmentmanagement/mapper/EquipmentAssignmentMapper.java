@@ -62,6 +62,7 @@ public class EquipmentAssignmentMapper {
 
         if (assignment.getWork() != null) {
             dto.setWorkId(assignment.getWork().getId());
+            dto.setWorkName(assignment.getWork().getName());
         }
 
         if (assignment.getWarehouse() != null) {

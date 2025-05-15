@@ -1,6 +1,7 @@
 package com.example.equipmentmanagement.service;
 
 import com.example.equipmentmanagement.dto.EquipmentAssignmentDTO;
+import com.example.equipmentmanagement.dto.EquipmentDTO;
 import com.example.equipmentmanagement.mapper.EquipmentAssignmentMapper;
 import com.example.equipmentmanagement.mapper.EquipmentMapper;
 import com.example.equipmentmanagement.model.Equipment;
@@ -18,7 +19,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.example.equipmentmanagement.mapper.EquipmentMapper.toDTO;
 
 @Service
 public class EquipmentAssignmentService {
@@ -118,5 +122,14 @@ public class EquipmentAssignmentService {
 
         return mapper.toDTO(assignment);
     }
+
+    // Método para obtener equipos EN_USO agrupados por obra
+    public List<EquipmentDTO> getEquipmentInUseByWorkId(Long workId) {
+        return assignmentRepository.findByWorkId(workId).stream()
+                .filter(a -> a.getEquipment() != null && EquipmentStatus.EN_USO.equals(a.getEquipment().getCurrentStatus()))
+                .map(a -> new EquipmentDTO(a.getEquipment().getId(), a.getEquipment().getName()))
+                .toList();
+    }
+
 }
 

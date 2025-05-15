@@ -23,6 +23,12 @@
 
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:classappend="${activePage == 'equipmentAssignment' ? 'active' : ''}">
+                    <a class="nav-link" href="/equipmentAssignment">Asignación</a>
+                </li>
+                <li class="nav-item" th:classappend="${activePage == 'map' ? 'active' : ''}">
+                    <a class="nav-link" href="/work/map">Mapa</a>
+                </li>
                 <li class="nav-item" th:classappend="${activePage == 'equipment' ? 'active' : ''}">
                     <a class="nav-link" href="/equipment">Equipos</a>
                 </li>

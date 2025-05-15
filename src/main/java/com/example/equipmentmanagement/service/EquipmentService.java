@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -152,6 +153,5 @@ public class EquipmentService {
                 .map(EquipmentMapper::toDTO)
                 .collect(Collectors.toList());
     }
-
 }
 

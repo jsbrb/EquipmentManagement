@@ -16,13 +16,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="warehouse : ${workList}">
-            <td class="text-center" th:text="${warehouse.id}"></td>
-            <td class="text-center" th:text="${warehouse.name}"></td>
-            <td class="text-center" th:text="${warehouse.location}"></td>
+        <tr th:each="work : ${workList}">
+            <td class="text-center" th:text="${work.id}"></td>
+            <td class="text-center" th:text="${work.name}"></td>
+            <td class="text-center" th:text="${work.location}"></td>
             <td>
-                <a th:href="@{/warehouse/edit/{id}(id=${warehouse.id})}" class="btn btn-sm btn-warning">Editar</a>
-                <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#confirmModal" th:data-id="${warehouse.id}">Eliminar</button>
+                <a th:href="@{/work/edit/{id}(id=${work.id})}" class="btn btn-sm btn-warning">Editar</a>
+                <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#confirmModal" th:data-id="${work.id}">Eliminar</button>
             </td>
         </tr>
         </tbody>
@@ -45,11 +45,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar este almacén? Esta acción no se puede deshacer.
+                ¿Estás seguro de que deseas eliminar esta obra? Esta acción no se puede deshacer.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <form id="deleteForm" method="post" th:action="@{/warehouse/delete/}" style="display:inline;">
+                <form id="deleteForm" method="post" th:action="@{/work/delete/}" style="display:inline;">
                     <button type="submit" class="btn btn-danger">Eliminar</button>
                 </form>
             </div>
@@ -66,9 +66,9 @@
 <script>
     $('#confirmModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
-        var warehouseId = button.data('id');
+        var workId = button.data('id');
         var form = $(this).find('#deleteForm');
-        form.attr('action', '/warehouse/delete/' + warehouseId);
+        form.attr('action', '/work/delete/' + workId);
     });
 </script>
 </body>

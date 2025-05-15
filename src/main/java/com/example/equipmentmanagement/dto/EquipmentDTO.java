@@ -17,6 +17,12 @@ public class EquipmentDTO {
     public EquipmentDTO() {
     }
 
+    // Constructor con id y nombre
+    public EquipmentDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     // Constructor
     public EquipmentDTO(Long id, String name, String serialNumber, String code, List<SubcategoryDTO> subcategory, EquipmentStatus currentStatus) {
         this.id = id;

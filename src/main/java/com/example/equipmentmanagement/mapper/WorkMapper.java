@@ -12,16 +12,21 @@ public class WorkMapper {
         return new WorkDTO(
                 work.getId(),
                 work.getName(),
-                work.getLocation()
+                work.getLocation(),
+                work.getLatitude(),
+                work.getLongitude()
         );
     }
 
     //Convertir WorkDTo a Work
-    public Work toEntity(WorkDTO workDTO) {
+    public static Work toEntity(WorkDTO workDTO) {
         Work work = new Work();
         work.setId(workDTO.getId());
         work.setName(workDTO.getName());
         work.setLocation(workDTO.getLocation());
+        work.setLatitude(workDTO.getLatitude());
+        work.setLongitude(workDTO.getLongitude());
+
         return  work;
     }
 }

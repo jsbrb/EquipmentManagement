@@ -13,7 +13,7 @@ public class EquipmentAssignmentDTO {
     private String operatorName;
 
     private Long workId;
-    private String workOrderNumber;
+    private String workName;
 
     private Long warehouseId;
     private String warehouseName;
@@ -73,14 +73,6 @@ public class EquipmentAssignmentDTO {
         this.workId = workId;
     }
 
-    public String getWorkOrderNumber() {
-        return workOrderNumber;
-    }
-
-    public void setWorkOrderNumber(String workOrderNumber) {
-        this.workOrderNumber = workOrderNumber;
-    }
-
     public Long getWarehouseId() {
         return warehouseId;
     }
@@ -120,5 +112,14 @@ public class EquipmentAssignmentDTO {
     public void setFormattedAssignedAt(String formattedAssignedAt) {
         this.formattedAssignedAt = formattedAssignedAt;
     }
+
+    public String getWorkName() {
+        return workName;
+    }
+
+    public void setWorkName(String workName) {
+        this.workName = workName;
+    }
 }
+
 

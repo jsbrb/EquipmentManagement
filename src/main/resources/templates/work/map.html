@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mapa de Obras')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <h1>Mapa de Obras con Equipos en Uso</h1>
+    <div id="map"></div>
+    <!-- Botón para volver al menú principal -->
+    <a href="/" class="btn btn-secondary mt-3">Volver al Menú Principal</a>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Pasar datos desde Thymeleaf a JavaScript -->
+<script th:inline="javascript">
+    let workMarkers = [[${workMarkers}]];
+</script>
+
+<script>
+    const map = L.map('map').setView([39.4699, -0.3763], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Agrega los marcadores
+    workMarkers.forEach(marker => {
+        const popupContent = `<strong>${marker.name}</strong><br/>Equipos en uso:<ul>${
+            marker.equipments.map(e => `<li>${e}</li>`).join('')
+        }</ul>`;
+
+        L.marker([marker.lat, marker.lng]).addTo(map).bindPopup(popupContent);
+    });
+</script>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
