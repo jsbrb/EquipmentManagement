@@ -3,10 +3,13 @@
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <title th:text="${title}">Título por defecto</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <!--AGREGAR FUENTE PARA EL NAVBAR-->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 </head>
 <body>
@@ -41,6 +44,9 @@
 <div th:fragment="footer" class="footer-custom text-center mt-4 mb-4">
     <small>© 2025 Sistema de Gestión de Equipos</small>
 </div>
+
+<!-- Leaflet JS se puede cargar aquí o al final del body -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 </body>
 </html>

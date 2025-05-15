@@ -67,3 +67,12 @@ table {
     object-fit: contain;  /* Asegura que la imagen se ajusta dentro del contenedor sin distorsionarse */
     margin-right: 10px; /* Espacio entre la imagen y el texto */
 }
+
+#map {
+  height: 300px;
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
