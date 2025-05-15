@@ -25,7 +25,7 @@ public class EquipmentService {
     @Autowired
     private SubcategoryRepository subcategoryRepository;
 
-    // Obtener todos los equipos
+    //Obtener todos los equipos
     public List<EquipmentDTO> getAllEquipments() {
         List<Equipment> equipments = equipmentRepository.findAllWithSubcategories();
         return equipments.stream().map(EquipmentMapper::toDTO).collect(Collectors.toList());
@@ -154,3 +154,4 @@ public class EquipmentService {
     }
 
 }
+
