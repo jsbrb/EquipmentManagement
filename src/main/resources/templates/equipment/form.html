@@ -3,8 +3,8 @@
 <head th:replace="~{fragments/layout :: head('Formulario de Equipo')}"></head>
 <body>
 <div class="container">
-    <h1 class="mt-4" th:text="${equipment != null && equipment.id != null ? 'Editar Equipo' : 'Nuevo Equipo'}"></h1>
-    <form th:action="@{/equipment}" th:object="${equipment}" method="post">
+    <h1 class="mt-4" th:text="${equipmentDTO != null && equipmentDTO.id != null ? 'Editar Equipo' : 'Nuevo Equipo'}"></h1>
+    <form th:action="@{/equipment}" th:object="${equipmentDTO}" method="post">
 
         <!-- Campo oculto para el ID -->
         <input type="hidden" th:field="*{id}" />
@@ -24,7 +24,7 @@
         <div class="form-group">
             <label for="subcategories">Subcategorías</label>
             <select id="subcategories" th:field="*{subcategoryId}" class="form-control">
-                <option th:value="" th:text="'Seleccione una subcategoría'"></option>
+                <option th:value="''" th:text="'Seleccione una subcategoría'"></option>
                 <option th:each="sub : ${subcategories}"
                         th:value="${sub.id}"
                         th:text="${sub.name}">

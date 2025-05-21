@@ -61,7 +61,7 @@ public class EquipmentController {
             model.addAttribute("error", "Equipo no encontrado.");
             return "redirect:/equipment";
         }
-        model.addAttribute("equipment", equipmentDTO);
+        model.addAttribute("equipmentDTO", equipmentDTO);
         model.addAttribute("subcategories", subcategoryService.getAllSubcategories());
         model.addAttribute("activePage", "equipment");
         return "equipment/form";
@@ -73,7 +73,7 @@ public class EquipmentController {
                 || equipmentDTO.getSerialNumber() == null || equipmentDTO.getSerialNumber().isEmpty() || equipmentDTO.getCode() == null || equipmentDTO.getCode().isEmpty()
                 || equipmentDTO.getSubcategoryId() == null) {  // Validar lista no vacía
             model.addAttribute("error", "Todos los campos son obligatorios.");
-            model.addAttribute("equipment", equipmentDTO);
+            model.addAttribute("equipmentDTO", equipmentDTO);
             return "equipment/form";
         }
 

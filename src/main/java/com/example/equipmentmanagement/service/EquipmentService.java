@@ -77,7 +77,7 @@ public class EquipmentService {
         equipment.setSerialNumber(equipmentDTO.getSerialNumber());
         equipment.setCode(equipmentDTO.getCode());
         equipment.setSubcategory(subcategory);
-        equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
+        //equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
 
         // Guardar el equipo
         Equipment savedEquipment = equipmentRepository.save(equipment);
