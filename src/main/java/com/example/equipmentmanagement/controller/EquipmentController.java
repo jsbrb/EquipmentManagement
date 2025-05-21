@@ -1,6 +1,7 @@
 package com.example.equipmentmanagement.controller;
 
 import com.example.equipmentmanagement.dto.EquipmentDTO;
+import com.example.equipmentmanagement.model.Subcategory;
 import com.example.equipmentmanagement.service.EquipmentService;
 import com.example.equipmentmanagement.service.SubcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,19 @@ public class EquipmentController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("direction", direction);
 
+        for (EquipmentDTO e : filteredEquipments) {
+            System.out.println("DTO Equipo: " + e.getName() + ", Subcategoría: " + e.getSubcategoryName());
+        }
+
         return "equipment/list"; // Vista Thymeleaf correspondiente
     }
 
     // Mostrar formulario para crear un nuevo equipo
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("equipment", new EquipmentDTO());
-        model.addAttribute("subcategoryList", subcategoryService.getAllSubcategories());
+        EquipmentDTO equipmentDTO = new EquipmentDTO();
+        model.addAttribute("equipmentDTO", equipmentDTO);
+        model.addAttribute("subcategories", subcategoryService.getAllSubcategories());
         model.addAttribute("activePage", "equipment");
         return "equipment/form";
     }
@@ -56,7 +62,7 @@ public class EquipmentController {
             return "redirect:/equipment";
         }
         model.addAttribute("equipment", equipmentDTO);
-        model.addAttribute("subcategoryList", subcategoryService.getAllSubcategories()); // nuevo
+        model.addAttribute("subcategories", subcategoryService.getAllSubcategories());
         model.addAttribute("activePage", "equipment");
         return "equipment/form";
     }
@@ -65,7 +71,7 @@ public class EquipmentController {
     public String saveEquipment(@ModelAttribute EquipmentDTO equipmentDTO, Model model) {
         if (equipmentDTO.getName() == null || equipmentDTO.getName().isEmpty()
                 || equipmentDTO.getSerialNumber() == null || equipmentDTO.getSerialNumber().isEmpty() || equipmentDTO.getCode() == null || equipmentDTO.getCode().isEmpty()
-                || equipmentDTO.getSubcategory() == null || equipmentDTO.getSubcategory().isEmpty()) {  // Validar lista no vacía
+                || equipmentDTO.getSubcategoryId() == null) {  // Validar lista no vacía
             model.addAttribute("error", "Todos los campos son obligatorios.");
             model.addAttribute("equipment", equipmentDTO);
             return "equipment/form";

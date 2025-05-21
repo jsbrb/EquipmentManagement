@@ -46,7 +46,7 @@
             <td class="text-center align-middle" th:text="${equipment.name}"></td>
             <td class="text-center align-middle" th:text="${equipment.code}"></td>
             <td class="text-center align-middle" th:text="${equipment.serialNumber}"></td>
-            <td class="text-center align-middle" th:text="${#lists.isEmpty(equipment.subcategory) ? 'Sin categoría' : equipment.subcategory.iterator().next().name}"></td>
+            <td class="text-center align-middle" th:text="${equipment.subcategoryName != null ? equipment.subcategoryName : 'Sin categoría'}"></td>
             <td class="text-center align-middle" th:text="${equipment.currentStatus}"></td>
             <td class="text-center align-middle">
                 <a th:href="@{/equipment/edit/{id}(id=${equipment.id})}" class="btn btn-warning btn-sm">Editar</a>

@@ -10,7 +10,8 @@ public class EquipmentDTO {
     private String name;
     private String serialNumber;
     private String code;
-    private List<SubcategoryDTO> subcategory;
+    private Long subcategoryId;
+    private String subcategoryName;
     private EquipmentStatus currentStatus;
 
     // Constructor por defecto (sin parámetros)
@@ -24,12 +25,13 @@ public class EquipmentDTO {
     }
 
     // Constructor
-    public EquipmentDTO(Long id, String name, String serialNumber, String code, List<SubcategoryDTO> subcategory, EquipmentStatus currentStatus) {
+    public EquipmentDTO(Long id, String name, String serialNumber, String code, Long subcategoryId, String subcategoryName, EquipmentStatus currentStatus) {
         this.id = id;
         this.name = name;
         this.serialNumber = serialNumber;
         this.code=code;
-        this.subcategory = subcategory;
+        this.subcategoryId = subcategoryId;
+        this.subcategoryName = subcategoryName;
         this.currentStatus = currentStatus;
     }
 
@@ -58,12 +60,12 @@ public class EquipmentDTO {
         this.serialNumber = serialNumber;
     }
 
-    public List<SubcategoryDTO> getSubcategory() {   // Getter que devuelve una lista
-        return subcategory;
+    public Long getSubcategoryId() {   // Getter que devuelve una lista
+        return subcategoryId;
     }
 
-    public void setSubcategory(List<SubcategoryDTO> subcategory) {   // Setter que acepta una lista
-        this.subcategory = subcategory;
+    public void setSubcategoryId(Long subcategoryId) {   // Setter que acepta una lista
+        this.subcategoryId = subcategoryId;
     }
 
     public EquipmentStatus getCurrentStatus() {
@@ -80,5 +82,13 @@ public class EquipmentDTO {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getSubcategoryName() {
+        return subcategoryName;
+    }
+
+    public void setSubcategoryName(String subcategoryName) {
+        this.subcategoryName = subcategoryName;
     }
 }

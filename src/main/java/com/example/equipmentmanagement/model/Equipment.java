@@ -15,13 +15,9 @@ public class Equipment {
     private String serialNumber;
     private String code;
 
-    @ManyToMany
-    @JoinTable(
-            name = "equipment_subcategory",
-            joinColumns = @JoinColumn(name = "equipment_id"),
-            inverseJoinColumns = @JoinColumn(name = "subcategory_id")
-    )
-    private Set<Subcategory> subcategories = new HashSet<>();  // Usamos un Set para evitar duplicados
+    @ManyToOne
+    @JoinColumn(name = "subcategory_id")  // Nombre de la columna FK en tabla Equipment
+    private Subcategory subcategory;
 
     @Enumerated(EnumType.STRING)
     private EquipmentStatus currentStatus;
@@ -65,14 +61,6 @@ public class Equipment {
         this.serialNumber = serialNumber;
     }
 
-    public Set<Subcategory> getSubcategories() {
-        return subcategories;
-    }
-
-    public void setSubcategories(Set<Subcategory> subcategories) {
-        this.subcategories = subcategories;
-    }
-
     public EquipmentStatus getCurrentStatus() {
         return currentStatus;
     }
@@ -111,5 +99,13 @@ public class Equipment {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Subcategory getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(Subcategory subcategory) {
+        this.subcategory = subcategory;
     }
 }

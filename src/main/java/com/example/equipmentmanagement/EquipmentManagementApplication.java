@@ -53,7 +53,7 @@ public class EquipmentManagementApplication {
 				equipment1.setCode("1218571");
 				equipment1.setSerialNumber("");
 				equipment1.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment1.getSubcategories().add(subcategory1);
+				equipment1.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment1);
 
 				// Equipo 2
@@ -62,7 +62,7 @@ public class EquipmentManagementApplication {
 				equipment2.setCode("683 1203245");
 				equipment2.setSerialNumber("253004");
 				equipment2.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment2.getSubcategories().add(subcategory1);
+				equipment2.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment2);
 
 				// Equipo 3
@@ -71,7 +71,7 @@ public class EquipmentManagementApplication {
 				equipment3.setCode("683 1203097");
 				equipment3.setSerialNumber("190030279");
 				equipment3.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment3.getSubcategories().add(subcategory1);
+				equipment3.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment3);
 
 				// Equipo 4
@@ -80,7 +80,7 @@ public class EquipmentManagementApplication {
 				equipment4.setCode("1203758");
 				equipment4.setSerialNumber("2568774");
 				equipment4.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment4.getSubcategories().add(subcategory1);
+				equipment4.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment4);
 
 				// Equipo 5
@@ -89,7 +89,7 @@ public class EquipmentManagementApplication {
 				equipment5.setCode("1203751");
 				equipment5.setSerialNumber("568465");
 				equipment5.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment5.getSubcategories().add(subcategory1);
+				equipment5.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment5);
 
 				// Equipo 6
@@ -98,7 +98,7 @@ public class EquipmentManagementApplication {
 				equipment6.setCode("1203773");
 				equipment6.setSerialNumber("201690391");
 				equipment6.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment6.getSubcategories().add(subcategory1);
+				equipment6.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment6);
 
 				// Equipo 7
@@ -107,7 +107,7 @@ public class EquipmentManagementApplication {
 				equipment7.setCode("1203766");
 				equipment7.setSerialNumber("201690378");
 				equipment7.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment7.getSubcategories().add(subcategory1);
+				equipment7.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment7);
 
 				// Equipo 8
@@ -116,7 +116,7 @@ public class EquipmentManagementApplication {
 				equipment8.setCode("13001487");
 				equipment8.setSerialNumber("591345");
 				equipment8.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment8.getSubcategories().add(subcategory2);
+				equipment8.setSubcategory(subcategory2);
 				equipmentRepo.save(equipment8);
 
 				// Equipo 9
@@ -125,7 +125,7 @@ public class EquipmentManagementApplication {
 				equipment9.setCode("1301494");
 				equipment9.setSerialNumber("591350");
 				equipment9.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment9.getSubcategories().add(subcategory2);
+				equipment9.setSubcategory(subcategory2);
 				equipmentRepo.save(equipment9);
 
 				// Equipo 10
@@ -134,7 +134,7 @@ public class EquipmentManagementApplication {
 				equipment10.setCode("1218575");
 				equipment10.setSerialNumber("");
 				equipment10.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment10.getSubcategories().add(subcategory1);
+				equipment10.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment10);
 
 				// Equipo 11
@@ -143,7 +143,7 @@ public class EquipmentManagementApplication {
 				equipment11.setCode("1218573");
 				equipment11.setSerialNumber("");
 				equipment11.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment11.getSubcategories().add(subcategory1);
+				equipment11.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment11);
 
 				// Equipo 12
@@ -152,7 +152,7 @@ public class EquipmentManagementApplication {
 				equipment12.setCode("1213235");
 				equipment12.setSerialNumber("");
 				equipment12.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment12.getSubcategories().add(subcategory1);
+				equipment12.setSubcategory(subcategory1);
 				equipmentRepo.save(equipment12);
 
 				// Equipo 13
@@ -161,7 +161,7 @@ public class EquipmentManagementApplication {
 				equipment13.setCode("1201003");
 				equipment13.setSerialNumber("");
 				equipment13.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment13.getSubcategories().add(subcategory3);
+				equipment13.setSubcategory(subcategory3);
 				equipmentRepo.save(equipment13);
 
 				// Equipo 14
@@ -170,7 +170,7 @@ public class EquipmentManagementApplication {
 				equipment14.setCode("1301357");
 				equipment14.setSerialNumber("");
 				equipment14.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment14.getSubcategories().add(subcategory2);
+				equipment14.setSubcategory(subcategory2);
 				equipmentRepo.save(equipment14);
 
 				// Equipo 15
@@ -179,7 +179,7 @@ public class EquipmentManagementApplication {
 				equipment15.setCode("002");
 				equipment15.setSerialNumber("");
 				equipment15.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment15.getSubcategories().add(subcategory2);
+				equipment15.setSubcategory(subcategory2);
 				equipmentRepo.save(equipment15);
 
 				// Equipo 16
@@ -188,7 +188,7 @@ public class EquipmentManagementApplication {
 				equipment16.setCode("680/015");
 				equipment16.setSerialNumber("");
 				equipment16.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment16.getSubcategories().add(subcategory2);
+				equipment16.setSubcategory(subcategory2);
 				equipmentRepo.save(equipment16);
 
 				// Equipo 17
@@ -197,7 +197,7 @@ public class EquipmentManagementApplication {
 				equipment17.setCode("683 1301329");
 				equipment17.setSerialNumber("180900173");
 				equipment17.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment17.getSubcategories().add(subcategory2);
+				equipment17.setSubcategory(subcategory2);
 				equipmentRepo.save(equipment17);
 
 				// Equipo 18
@@ -206,8 +206,9 @@ public class EquipmentManagementApplication {
 				equipment18.setCode("683 3500321");
 				equipment18.setSerialNumber("");
 				equipment18.setCurrentStatus(EquipmentStatus.DISPONIBLE);
-				equipment18.getSubcategories().add(subcategory2);
+				equipment18.setSubcategory(subcategory2);
 				equipmentRepo.save(equipment18);
+
 
 				// Continúa con los demás equipos de forma similar
 			}

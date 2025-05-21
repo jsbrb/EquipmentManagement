@@ -15,17 +15,17 @@ public class EquipmentMapper {
 
     // Convertir Equipment a EquipmentDTO
     public static EquipmentDTO toDTO(Equipment equipment) {
-        List<SubcategoryDTO> subcategoryDTOs = equipment.getSubcategories()
-                .stream()
-                .map(SubcategoryMapper::toDTO)
-                .collect(Collectors.toList());
+        Long subcategoryId = equipment.getSubcategory() != null ? equipment.getSubcategory().getId() : null;
+        String subcategoryName = equipment.getSubcategory() != null ? equipment.getSubcategory().getName() : null;
+
 
         return new EquipmentDTO(
                 equipment.getId(),
                 equipment.getName(),
                 equipment.getSerialNumber(),
                 equipment.getCode(),
-                subcategoryDTOs,
+                subcategoryId,
+                subcategoryName,
                 equipment.getCurrentStatus()
         );
     }
@@ -39,13 +39,12 @@ public class EquipmentMapper {
         equipment.setCode(dto.getCode());
         equipment.setCurrentStatus(dto.getCurrentStatus());
 
-        // Obtener las subcategorías desde el DTO y convertirlas a entidad
-        Set<Subcategory> subcategories = dto.getSubcategory()
-                .stream()
-                .map(SubcategoryMapper::toEntity)
-                .collect(Collectors.toSet());
-
-        equipment.setSubcategories(subcategories); // Ahora sí coincide con la firma
+        if (dto.getSubcategoryId() != null) {
+            Subcategory subcategory = new Subcategory();
+            subcategory.setId(dto.getSubcategoryId());
+            // Si tienes más campos en DTO para Subcategory, asignarlos aquí
+            equipment.setSubcategory(subcategory);
+        }
 
         return equipment;
     }

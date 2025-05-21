@@ -11,10 +11,7 @@ import com.example.equipmentmanagement.repository.SubcategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,18 +26,32 @@ public class EquipmentService {
     //Obtener todos los equipos
     public List<EquipmentDTO> getAllEquipments() {
         List<Equipment> equipments = equipmentRepository.findAllWithSubcategories();
+
+        List<EquipmentDTO> equipmentDTOs = equipments.stream()
+                .map(EquipmentMapper::toDTO)
+                .toList();
+
         return equipments.stream().map(EquipmentMapper::toDTO).collect(Collectors.toList());
     }
 
-    // Obtener un equipo por ID
     public EquipmentDTO getEquipmentById(Long id) {
         Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+
+        Long subcategoryId = null;
+        if (equipment.getSubcategory() != null) {
+            subcategoryId = equipment.getSubcategory().getId();
+        }
+
+        String subcategoryName = equipment.getSubcategory() != null ? equipment.getSubcategory().getName() : null;
+
+
         return new EquipmentDTO(
                 equipment.getId(),
                 equipment.getName(),
                 equipment.getSerialNumber(),
                 equipment.getCode(),
-                equipment.getSubcategories().stream().map(sub -> new SubcategoryDTO(sub.getId(), sub.getName())).collect(Collectors.toList()), // Convertir a DTO
+                subcategoryId,
+                subcategoryName,
                 equipment.getCurrentStatus()
         );
     }
@@ -51,25 +62,34 @@ public class EquipmentService {
             throw new RuntimeException("No se puede crear un equipo con un ID existente");
         }
 
-        // Asignar las subcategorías
-        List<Subcategory> subcategories = equipmentDTO.getSubcategory().stream()
-                .map(subDTO -> subcategoryRepository.findById(subDTO.getId()).orElseThrow(() -> new RuntimeException("Subcategoría no encontrada")))
-                .collect(Collectors.toList());
+        // Validar y buscar la subcategoría
+        Long subcategoryId = equipmentDTO.getSubcategoryId();
+        if (subcategoryId == null) {
+            throw new IllegalArgumentException("El ID de la subcategoría no puede ser null");
+        }
 
+        Subcategory subcategory = subcategoryRepository.findById(subcategoryId)
+                .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
+
+        // Crear y poblar el nuevo equipo
         Equipment equipment = new Equipment();
         equipment.setName(equipmentDTO.getName());
         equipment.setSerialNumber(equipmentDTO.getSerialNumber());
         equipment.setCode(equipmentDTO.getCode());
-        equipment.setSubcategories(new HashSet<>(subcategories)); // Asignar subcategorías
+        equipment.setSubcategory(subcategory);
         equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
 
+        // Guardar el equipo
         Equipment savedEquipment = equipmentRepository.save(equipment);
+
+        // Convertir a DTO para la respuesta
         return new EquipmentDTO(
                 savedEquipment.getId(),
                 savedEquipment.getName(),
                 savedEquipment.getSerialNumber(),
                 savedEquipment.getCode(),
-                savedEquipment.getSubcategories().stream().map(sub -> new SubcategoryDTO(sub.getId(), sub.getName())).collect(Collectors.toList()), // Convertir a DTO
+                subcategoryId,
+                subcategory.getName(),
                 savedEquipment.getCurrentStatus()
         );
     }
@@ -79,14 +99,19 @@ public class EquipmentService {
         Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
 
         // Asignar las subcategorías
-        List<Subcategory> subcategories = equipmentDTO.getSubcategory().stream()
-                .map(subDTO -> subcategoryRepository.findById(subDTO.getId()).orElseThrow(() -> new RuntimeException("Subcategoría no encontrada")))
-                .collect(Collectors.toList());
+        Long subcategoryId = equipmentDTO.getSubcategoryId();
+        if (subcategoryId == null) {
+            throw new RuntimeException("El ID de la subcategoría no puede ser null");
+        }
+
+        // Buscar la subcategoría en la BD
+        Subcategory subcategory = subcategoryRepository.findById(subcategoryId)
+                .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
 
         equipment.setName(equipmentDTO.getName());
         equipment.setSerialNumber(equipmentDTO.getSerialNumber());
         equipment.setCode(equipmentDTO.getCode());
-        equipment.setSubcategories(new HashSet<>(subcategories)); // Asignar subcategorías
+        equipment.setSubcategory(subcategory);
         equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
 
         Equipment updatedEquipment = equipmentRepository.save(equipment);
@@ -95,7 +120,8 @@ public class EquipmentService {
                 updatedEquipment.getName(),
                 updatedEquipment.getSerialNumber(),
                 updatedEquipment.getCode(),
-                updatedEquipment.getSubcategories().stream().map(sub -> new SubcategoryDTO(sub.getId(), sub.getName())).collect(Collectors.toList()), // Convertir a DTO
+                subcategoryId,
+                subcategory.getName(),
                 updatedEquipment.getCurrentStatus()
         );
     }
@@ -119,22 +145,20 @@ public class EquipmentService {
     public List<EquipmentDTO> filterAndSort(String search, String status, String sortField, String direction) {
         List<Equipment> equipments;
 
-        // Si hay un filtro de estado
         if (status != null && !status.isEmpty()) {
             EquipmentStatus equipmentStatus = EquipmentStatus.valueOf(status.toUpperCase());
-            equipments = equipmentRepository.findByCurrentStatus(equipmentStatus);
+            equipments = equipmentRepository.findByCurrentStatusWithSubcategory(equipmentStatus);
         } else {
             equipments = equipmentRepository.findAllWithSubcategories();
         }
 
-        // Si hay un filtro de búsqueda por nombre
+        // El resto queda igual
         if (search != null && !search.isEmpty()) {
             equipments = equipments.stream()
                     .filter(equipment -> equipment.getName().toLowerCase().contains(search.toLowerCase()))
                     .collect(Collectors.toList());
         }
 
-        // Ordenar
         if ("name".equalsIgnoreCase(sortField)) {
             if ("ASC".equalsIgnoreCase(direction)) {
                 equipments.sort(Comparator.comparing(Equipment::getName));
@@ -147,6 +171,10 @@ public class EquipmentService {
             } else {
                 equipments.sort(Comparator.comparing(Equipment::getCurrentStatus).reversed());
             }
+        }
+
+        for (Equipment e : equipments) {
+            System.out.println("Equipo: " + e.getName() + ", Subcategoría: " + (e.getSubcategory() != null ? e.getSubcategory().getName() : "NULL"));
         }
 
         return equipments.stream()

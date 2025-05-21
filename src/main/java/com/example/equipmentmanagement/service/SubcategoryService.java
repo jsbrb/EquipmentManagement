@@ -15,6 +15,10 @@ public class SubcategoryService {
     @Autowired
     private SubcategoryRepository repository;
 
+    public List<Subcategory> findAll() {
+        return repository.findAll();
+    }
+
     public List<SubcategoryDTO> getAllSubcategories() {
         return repository.findAll()
                 .stream()

@@ -23,11 +23,11 @@
         </div>
         <div class="form-group">
             <label for="subcategories">Subcategorías</label>
-            <select id="subcategories" name="subcategories" th:field="*{subcategory}" class="form-control">
-                <option th:each="subcat : ${subcategoryList}"
-                        th:value="${subcat.id}"
-                        th:text="${subcat.name}"
-                        th:selected="${equipment.subcategory != null} ? ${equipment.subcategory == subcat} : false">
+            <select id="subcategories" th:field="*{subcategoryId}" class="form-control">
+                <option th:value="" th:text="'Seleccione una subcategoría'"></option>
+                <option th:each="sub : ${subcategories}"
+                        th:value="${sub.id}"
+                        th:text="${sub.name}">
                 </option>
             </select>
         </div>
