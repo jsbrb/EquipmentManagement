@@ -29,6 +29,7 @@ public class Equipment {
     private Work currentWork;
 
     @ManyToOne
+    @JoinColumn(name="warehouse_id")
     private Warehouse warehouse;
 
     // Constructor por defecto

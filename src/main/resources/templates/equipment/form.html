@@ -31,6 +31,16 @@
                 </option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="warehouses">Almacén</label>
+            <select id="warehouses" th:field="*{warehouseId}" class="form-control">
+                <option value="" th:text="'Seleccione un Almacén'"></option>
+                <option th:each="war : ${warehouses}"
+                        th:value="${war.id}"
+                        th:text="${war.name}">
+                </option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a href="/equipment" class="btn btn-secondary">Cancelar</a>
     </form>

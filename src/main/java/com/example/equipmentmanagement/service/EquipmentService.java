@@ -6,8 +6,11 @@ import com.example.equipmentmanagement.mapper.EquipmentMapper;
 import com.example.equipmentmanagement.model.Equipment;
 import com.example.equipmentmanagement.model.EquipmentStatus;
 import com.example.equipmentmanagement.model.Subcategory;
+import com.example.equipmentmanagement.model.Warehouse;
 import com.example.equipmentmanagement.repository.EquipmentRepository;
 import com.example.equipmentmanagement.repository.SubcategoryRepository;
+import com.example.equipmentmanagement.repository.WarehouseRepository;
+import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,9 @@ public class EquipmentService {
 
     @Autowired
     private SubcategoryRepository subcategoryRepository;
+
+    @Autowired
+    private WarehouseRepository warehouseRepository;
 
     //Obtener todos los equipos
     public List<EquipmentDTO> getAllEquipments() {
@@ -44,6 +50,8 @@ public class EquipmentService {
 
         String subcategoryName = equipment.getSubcategory() != null ? equipment.getSubcategory().getName() : null;
 
+        Long warehouseId = equipment.getWarehouse() != null ? equipment.getWarehouse().getId() : null;
+        String warehouseName = equipment.getWarehouse() != null ? equipment.getWarehouse().getName() : null;
 
         return new EquipmentDTO(
                 equipment.getId(),
@@ -52,12 +60,17 @@ public class EquipmentService {
                 equipment.getCode(),
                 subcategoryId,
                 subcategoryName,
-                equipment.getCurrentStatus()
+                equipment.getCurrentStatus(),
+                warehouseId,
+                warehouseName
         );
     }
 
     // Crear un nuevo equipo
     public EquipmentDTO createEquipment(EquipmentDTO equipmentDTO) {
+        System.out.println("Warehouse ID recibido (CREATE): " + equipmentDTO.getWarehouseId());
+        System.out.println("Estado recibido (CREATE): " + equipmentDTO.getCurrentStatus());
+
         if (equipmentDTO.getId() != null) {
             throw new RuntimeException("No se puede crear un equipo con un ID existente");
         }
@@ -67,9 +80,16 @@ public class EquipmentService {
         if (subcategoryId == null) {
             throw new IllegalArgumentException("El ID de la subcategoría no puede ser null");
         }
-
         Subcategory subcategory = subcategoryRepository.findById(subcategoryId)
                 .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
+
+        // Validar y buscar el almacén
+        Long warehouseId = equipmentDTO.getWarehouseId();
+        if (warehouseId == null) {
+            throw new IllegalArgumentException("El ID del almacén no puede ser null");
+        }
+        Warehouse warehouse = warehouseRepository.findById(warehouseId)
+                .orElseThrow(() -> new RuntimeException("Almacén no encontrado"));
 
         // Crear y poblar el nuevo equipo
         Equipment equipment = new Equipment();
@@ -77,6 +97,7 @@ public class EquipmentService {
         equipment.setSerialNumber(equipmentDTO.getSerialNumber());
         equipment.setCode(equipmentDTO.getCode());
         equipment.setSubcategory(subcategory);
+        equipment.setWarehouse(warehouse);
         //equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
 
         // Guardar el equipo
@@ -90,7 +111,9 @@ public class EquipmentService {
                 savedEquipment.getCode(),
                 subcategoryId,
                 subcategory.getName(),
-                savedEquipment.getCurrentStatus()
+                savedEquipment.getCurrentStatus(),
+                warehouseId,
+                warehouse.getName()
         );
     }
 
@@ -108,11 +131,24 @@ public class EquipmentService {
         Subcategory subcategory = subcategoryRepository.findById(subcategoryId)
                 .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
 
+        // Asignar el almacén
+        Long warehouseId = equipmentDTO.getWarehouseId();
+        if (warehouseId == null) {
+            throw new RuntimeException("El ID del almacén no puede ser null");
+        }
+
+        // Buscar la subcategoría en la BD
+        Warehouse warehouse = warehouseRepository.findById(warehouseId)
+                .orElseThrow(() -> new RuntimeException("Almacén no encontrado"));
+
         equipment.setName(equipmentDTO.getName());
         equipment.setSerialNumber(equipmentDTO.getSerialNumber());
         equipment.setCode(equipmentDTO.getCode());
         equipment.setSubcategory(subcategory);
-        equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
+        if (equipmentDTO.getCurrentStatus() != null) {
+            equipment.setCurrentStatus(equipmentDTO.getCurrentStatus());
+        }
+        equipment.setWarehouse(warehouse);
 
         Equipment updatedEquipment = equipmentRepository.save(equipment);
         return new EquipmentDTO(
@@ -122,7 +158,9 @@ public class EquipmentService {
                 updatedEquipment.getCode(),
                 subcategoryId,
                 subcategory.getName(),
-                updatedEquipment.getCurrentStatus()
+                updatedEquipment.getCurrentStatus(),
+                warehouseId,
+                warehouse.getName()
         );
     }
 

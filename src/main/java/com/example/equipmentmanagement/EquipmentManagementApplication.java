@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 
 @SpringBootApplication
 public class EquipmentManagementApplication {
@@ -15,6 +16,7 @@ public class EquipmentManagementApplication {
 	}
 
 	@Bean
+	@Order(1)
 	public CommandLineRunner preloadSubcategories(SubcategoryRepository repo) {
 		return args -> {
 			if (repo.count() == 0) {
@@ -38,6 +40,7 @@ public class EquipmentManagementApplication {
 	}
 
 	@Bean
+	@Order(2)
 	public CommandLineRunner preloadEquipment(EquipmentRepository equipmentRepo, SubcategoryRepository subcategoryRepo) {
 		return args -> {
 			if (equipmentRepo.count() == 0) {
@@ -46,6 +49,13 @@ public class EquipmentManagementApplication {
 				Subcategory subcategory2 = subcategoryRepo.findByName("HERRAMIENTA DE MANO");
 				Subcategory subcategory3 = subcategoryRepo.findByName("MEDIA TENSIÓN");
 				Subcategory subcategory4 = subcategoryRepo.findByName("EQUIPOS");
+
+				// Verificar que las subcategorías no sean null
+				if (subcategory1 == null || subcategory2 == null || subcategory3 == null || subcategory4 == null) {
+					System.out.println("¡Error! Alguna subcategoría no existe. Revisa los datos.");
+					return; // Salir sin agregar equipos
+				}
+
 
 				// Equipo 1
 				Equipment equipment1 = new Equipment();

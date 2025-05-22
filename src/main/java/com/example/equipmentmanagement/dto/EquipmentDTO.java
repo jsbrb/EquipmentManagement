@@ -13,6 +13,8 @@ public class EquipmentDTO {
     private Long subcategoryId;
     private String subcategoryName;
     private EquipmentStatus currentStatus;
+    private Long warehouseId;
+    private String warehouseName;
 
     // Constructor por defecto (sin parámetros)
     public EquipmentDTO() {
@@ -25,7 +27,7 @@ public class EquipmentDTO {
     }
 
     // Constructor
-    public EquipmentDTO(Long id, String name, String serialNumber, String code, Long subcategoryId, String subcategoryName, EquipmentStatus currentStatus) {
+    public EquipmentDTO(Long id, String name, String serialNumber, String code, Long subcategoryId, String subcategoryName, EquipmentStatus currentStatus, Long warehouseId, String warehouseName) {
         this.id = id;
         this.name = name;
         this.serialNumber = serialNumber;
@@ -33,6 +35,8 @@ public class EquipmentDTO {
         this.subcategoryId = subcategoryId;
         this.subcategoryName = subcategoryName;
         this.currentStatus = currentStatus;
+        this.warehouseId=warehouseId;
+        this.warehouseName=warehouseName;
     }
 
     // Getters and setters
@@ -90,5 +94,21 @@ public class EquipmentDTO {
 
     public void setSubcategoryName(String subcategoryName) {
         this.subcategoryName = subcategoryName;
+    }
+
+    public Long getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Long warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
 }

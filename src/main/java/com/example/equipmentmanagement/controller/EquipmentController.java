@@ -2,8 +2,10 @@ package com.example.equipmentmanagement.controller;
 
 import com.example.equipmentmanagement.dto.EquipmentDTO;
 import com.example.equipmentmanagement.model.Subcategory;
+import com.example.equipmentmanagement.repository.WarehouseRepository;
 import com.example.equipmentmanagement.service.EquipmentService;
 import com.example.equipmentmanagement.service.SubcategoryService;
+import com.example.equipmentmanagement.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,9 @@ public class EquipmentController {
 
     @Autowired
     private SubcategoryService subcategoryService;
+
+    @Autowired
+    private WarehouseService warehouseService;
 
     // Listar todos los equipos con filtros y ordenamientos
     @GetMapping
@@ -49,7 +54,11 @@ public class EquipmentController {
         EquipmentDTO equipmentDTO = new EquipmentDTO();
         model.addAttribute("equipmentDTO", equipmentDTO);
         model.addAttribute("subcategories", subcategoryService.getAllSubcategories());
+        model.addAttribute("warehouses", warehouseService.getAllWarehouses());
         model.addAttribute("activePage", "equipment");
+
+        System.out.println("warehouseId en GET: " + equipmentDTO.getWarehouseId());
+
         return "equipment/form";
     }
 
@@ -63,7 +72,11 @@ public class EquipmentController {
         }
         model.addAttribute("equipmentDTO", equipmentDTO);
         model.addAttribute("subcategories", subcategoryService.getAllSubcategories());
+        model.addAttribute("warehouses", warehouseService.getAllWarehouses());
         model.addAttribute("activePage", "equipment");
+
+        System.out.println("warehouseId en GET: " + equipmentDTO.getWarehouseId());
+
         return "equipment/form";
     }
 
@@ -82,6 +95,8 @@ public class EquipmentController {
         } else {
             equipmentService.createEquipment(equipmentDTO);
         }
+
+        System.out.println("warehouseId en POST error: " + equipmentDTO.getWarehouseId());
 
         return "redirect:/equipment";
     }

@@ -17,5 +17,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
     @Query("SELECT e FROM Equipment e LEFT JOIN FETCH e.subcategory WHERE e.currentStatus = :status")
     List<Equipment> findByCurrentStatusWithSubcategory(@Param("status") EquipmentStatus status);
 
+    @Query("SELECT e FROM Equipment e LEFT JOIN FETCH e.warehouse")
+    List<Equipment> findAllWithWarehouses();
 
 }
