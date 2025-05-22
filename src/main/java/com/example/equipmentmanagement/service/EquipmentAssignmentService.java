@@ -65,36 +65,40 @@ public class EquipmentAssignmentService {
 
     // Crear una asignación
     public EquipmentAssignmentDTO createAssignment(EquipmentAssignmentDTO dto) {
+        // 1. Obtiene el equipo y comprueba que está libre
         Equipment equipment = equipmentRepository.findById(dto.getEquipmentId())
                 .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
         if (equipment.getCurrentStatus() == EquipmentStatus.EN_USO) {
             throw new RuntimeException("Este equipo ya está en uso.");
         }
 
+        // 2. Construye la entidad de asignación
         EquipmentAssignment assignment = new EquipmentAssignment();
         assignment.setEquipment(equipment);
         assignment.setOperator(operatorRepository.findById(dto.getOperatorId())
                 .orElseThrow(() -> new RuntimeException("Operario no encontrado")));
         assignment.setWork(workRepository.findById(dto.getWorkId())
                 .orElseThrow(() -> new RuntimeException("Trabajo no encontrado")));
-        assignment.setWarehouse(warehouseRepository.findById(dto.getWarehouseId())
-                .orElseThrow(() -> new RuntimeException("Almacén no encontrado")));
+        // ← Asigna el warehouse que ya viene en el equipo
+        assignment.setWarehouse(equipment.getWarehouse());
 
-        // Asignar la fecha actual
+        // 3.  Asignar la fecha actual
         LocalDateTime assignedAt = LocalDateTime.now();
         assignment.setAssignedAt(assignedAt);
 
-        // Formatear la fecha antes de asignarla al DTO
+        // 4. Formatear la fecha antes de asignarla al DTO
         String formattedAssignedAt = assignedAt.format(formatter);  // Formateamos la fecha
         dto.setFormattedAssignedAt(formattedAssignedAt);  // Asignamos la fecha formateada al DTO
 
-        // Cambiar estado del equipo a EN_USO
+        // 5. Cambiar estado del equipo a EN_USO
         equipment.setCurrentStatus(EquipmentStatus.EN_USO);
         equipment.setCurrentOperator(assignment.getOperator());
         equipment.setCurrentWork(assignment.getWork());
 
         assignmentRepository.save(assignment);
         equipmentRepository.save(equipment);
+
+        System.out.println(assignment.getWarehouse().getName());
 
         return dto; // Devolver el DTO con la fecha formateada
     }

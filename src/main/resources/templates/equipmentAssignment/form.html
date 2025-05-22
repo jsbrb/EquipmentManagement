@@ -12,11 +12,17 @@
 
         <div class="form-group">
             <label for="equipmentId">Equipo</label>
-            <select th:field="*{equipmentId}" id="equipmentId" class="form-control" required>
+            <select th:field="*{equipmentId}"
+                    id="equipmentId"
+                    class="form-control"
+                    required
+                    onchange="updateWarehouse()">
+                <option value="" disabled selected>-- Selecciona equipo --</option>
                 <option th:each="equipment : ${equipments}"
                         th:value="${equipment.id}"
+                        th:data-warehouse-id="${equipment.warehouseId}"
+                        th:data-warehouse-name="${equipment.warehouseName}"
                         th:text="${equipment.name}">
-                    Equipo
                 </option>
             </select>
         </div>
@@ -44,15 +50,13 @@
         </div>
 
         <div class="form-group">
-            <label for="warehouseId">Almacén</label>
-            <select th:field="*{warehouseId}" id="warehouseId" class="form-control" required>
-                <option th:each="warehouse : ${warehouses}"
-                        th:value="${warehouse.id}"
-                        th:text="${warehouse.name}">
-                    Almacén
-                </option>
-            </select>
+            <label for="warehouseName">Almacén</label>
+            <!-- oculto para enviar al servidor -->
+            <input type="hidden" th:field="*{warehouseId}" id="warehouseId"/>
+            <!-- solo lectura para mostrar el nombre -->
+            <input type="text" id="warehouseName" class="form-control" readonly />
         </div>
+
 
         <button type="submit" class="btn btn-primary">Asignar Equipo</button>
         <a th:href="@{/equipmentAssignment}" class="btn btn-secondary">Volver a la lista de asignaciones</a>
@@ -62,4 +66,18 @@
 <div th:replace="~{fragments/layout :: footer}"></div>
 
 </body>
+<script>
+    function updateWarehouse() {
+      const sel = document.getElementById('equipmentId');
+      const opt = sel.options[sel.selectedIndex];
+      if (!opt) return;
+      document.getElementById('warehouseId').value   = opt.dataset.warehouseId   || '';
+      document.getElementById('warehouseName').value = opt.dataset.warehouseName || '';
+    }
+    document.getElementById('equipmentId')
+            .addEventListener('change', updateWarehouse);
+    window.addEventListener('DOMContentLoaded', updateWarehouse);
+</script>
+
+
 </html>

@@ -1,7 +1,9 @@
 package com.example.equipmentmanagement.controller;
 
 import com.example.equipmentmanagement.dto.EquipmentAssignmentDTO;
+import com.example.equipmentmanagement.dto.EquipmentDTO;
 import com.example.equipmentmanagement.model.EquipmentAssignment;
+import com.example.equipmentmanagement.model.Warehouse;
 import com.example.equipmentmanagement.repository.EquipmentAssignmentRepository;
 import com.example.equipmentmanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +47,14 @@ public class EquipmentAssignmentController {
         System.out.println("Obras: " + workService.getAllWorks());
         System.out.println("Almacenes: " + warehouseService.getAllWarehouses());
 
+
         model.addAttribute("assignment", new EquipmentAssignmentDTO());
-        model.addAttribute("equipments", equipmentService.findAvailableEquipments());
+        // ▶ Aquí: usar getAllEquipments (DTOs) en vez de entidades
+        List<EquipmentDTO> equipmentDTOs = equipmentService.getAllEquipments();
+        model.addAttribute("equipments", equipmentDTOs);
+        //model.addAttribute("equipments", equipmentService.findAvailableEquipments());
         model.addAttribute("operators", operatorService.getAllOperators());
         model.addAttribute("works", workService.getAllWorks());
-        model.addAttribute("warehouses", warehouseService.getAllWarehouses());
         return "equipmentAssignment/form";
     }
 
