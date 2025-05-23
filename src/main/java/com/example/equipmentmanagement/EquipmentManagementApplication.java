@@ -47,10 +47,27 @@ public class EquipmentManagementApplication {
 			if (warehouseRepository.count() == 0) {
 				Warehouse warehouse = new Warehouse();
 				warehouse.setName("Almacén Principal");
-				warehouse.setLocation("Ubicación desconocida"); // Puedes cambiar esta ubicación si lo deseas
-
+				warehouse.setLocation("Ronda Norte, Camí de Vera, Benimaclet, Valencia, Comarca de Valencia, Valencia, Comunidad Valenciana, 46020, España"); // Puedes cambiar esta ubicación si lo deseas
+				warehouse.setLongitude(-0.3518473);
+				warehouse.setLatitude(39.4844561);
 				// Guardamos el almacén en la base de datos
 				warehouseRepository.save(warehouse);
+
+				Warehouse warehouse1 = new Warehouse();
+				warehouse1.setName("Almacén Secundario");
+				warehouse1.setLocation("Gran Vía de Ramón y Cajal, Arrancapins, Extramuros, Valencia, Comarca de Valencia, Valencia, Comunidad Valenciana, 46007, España"); // Puedes cambiar esta ubicación si lo deseas
+				warehouse1.setLatitude(39.4648916);
+				warehouse1.setLongitude(-0.3815205);
+				// Guardamos el almacén en la base de datos
+				warehouseRepository.save(warehouse1);
+
+				Warehouse warehouse2 = new Warehouse();
+				warehouse2.setName("Almacén Primario");
+				warehouse2.setLocation("Avenida de Ausiàs March, Margarita Nelken, Na Rovella, Quatre Carreres, Valencia, Comarca de Valencia, Valencia, Comunidad Valenciana, 46026, España"); // Puedes cambiar esta ubicación si lo deseas
+				warehouse2.setLatitude(39.4485491);
+				warehouse2.setLongitude(-0.3698187);
+				// Guardamos el almacén en la base de datos
+				warehouseRepository.save(warehouse2);
 			}
 		};
 	}
@@ -72,12 +89,10 @@ public class EquipmentManagementApplication {
 					return; // Salir sin agregar equipos
 				}
 
-				// Obtener almacén con id 1 (el que creaste en preloadWarehouse)
-				Warehouse warehouse = warehouseRepository.findById(1L).orElse(null);
-				if (warehouse == null) {
-					System.out.println("¡Error! El almacén no existe.");
-					return;
-				}
+				//Cagar almacenes
+				Warehouse warehouse = warehouseRepository.findByName("Almacén Principal");
+				Warehouse warehouse1 = warehouseRepository.findByName("Almacén Secundario");
+				Warehouse warehouse2 = warehouseRepository.findByName("Almacén Primario");
 
 
 				// Equipo 1
@@ -117,7 +132,7 @@ public class EquipmentManagementApplication {
 				equipment4.setSerialNumber("2568774");
 				equipment4.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment4.setSubcategory(subcategory1);
-				equipment4.setWarehouse(warehouse);
+				equipment4.setWarehouse(warehouse1);
 				equipmentRepo.save(equipment4);
 
 				// Equipo 5
@@ -127,7 +142,7 @@ public class EquipmentManagementApplication {
 				equipment5.setSerialNumber("568465");
 				equipment5.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment5.setSubcategory(subcategory1);
-				equipment5.setWarehouse(warehouse);
+				equipment5.setWarehouse(warehouse2);
 				equipmentRepo.save(equipment5);
 
 				// Equipo 6
@@ -137,7 +152,7 @@ public class EquipmentManagementApplication {
 				equipment6.setSerialNumber("201690391");
 				equipment6.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment6.setSubcategory(subcategory1);
-				equipment6.setWarehouse(warehouse);
+				equipment6.setWarehouse(warehouse1);
 				equipmentRepo.save(equipment6);
 
 				// Equipo 7
@@ -147,7 +162,7 @@ public class EquipmentManagementApplication {
 				equipment7.setSerialNumber("201690378");
 				equipment7.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment7.setSubcategory(subcategory1);
-				equipment7.setWarehouse(warehouse);
+				equipment7.setWarehouse(warehouse1);
 				equipmentRepo.save(equipment7);
 
 				// Equipo 8
@@ -167,7 +182,7 @@ public class EquipmentManagementApplication {
 				equipment9.setSerialNumber("591350");
 				equipment9.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment9.setSubcategory(subcategory2);
-				equipment9.setWarehouse(warehouse);
+				equipment9.setWarehouse(warehouse1);
 				equipmentRepo.save(equipment9);
 
 				// Equipo 10
@@ -217,7 +232,7 @@ public class EquipmentManagementApplication {
 				equipment14.setSerialNumber("");
 				equipment14.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment14.setSubcategory(subcategory2);
-				equipment14.setWarehouse(warehouse);
+				equipment14.setWarehouse(warehouse1);
 				equipmentRepo.save(equipment14);
 
 				// Equipo 15
@@ -237,7 +252,7 @@ public class EquipmentManagementApplication {
 				equipment16.setSerialNumber("");
 				equipment16.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment16.setSubcategory(subcategory2);
-				equipment16.setWarehouse(warehouse);
+				equipment16.setWarehouse(warehouse2);
 				equipmentRepo.save(equipment16);
 
 				// Equipo 17
@@ -247,7 +262,7 @@ public class EquipmentManagementApplication {
 				equipment17.setSerialNumber("180900173");
 				equipment17.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment17.setSubcategory(subcategory2);
-				equipment17.setWarehouse(warehouse);
+				equipment17.setWarehouse(warehouse2);
 				equipmentRepo.save(equipment17);
 
 				// Equipo 18
@@ -257,7 +272,7 @@ public class EquipmentManagementApplication {
 				equipment18.setSerialNumber("");
 				equipment18.setCurrentStatus(EquipmentStatus.DISPONIBLE);
 				equipment18.setSubcategory(subcategory2);
-				equipment18.setWarehouse(warehouse);
+				equipment18.setWarehouse(warehouse1);
 				equipmentRepo.save(equipment18);
 
 
