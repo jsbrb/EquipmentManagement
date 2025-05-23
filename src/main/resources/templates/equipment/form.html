@@ -33,8 +33,8 @@
         </div>
         <div class="form-group">
             <label for="warehouses">Almacén</label>
-            <select id="warehouses" th:field="*{warehouseId}" class="form-control">
-                <option value="" th:text="'Seleccione un Almacén'"></option>
+            <select id="warehouses" th:field="*{warehouseId}" class="form-control" required>
+                <option value="" disabled selected th:text="'Seleccione un Almacén'"></option>
                 <option th:each="war : ${warehouses}"
                         th:value="${war.id}"
                         th:text="${war.name}">
