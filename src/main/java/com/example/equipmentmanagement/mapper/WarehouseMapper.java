@@ -11,16 +11,21 @@ public class WarehouseMapper {
         return new WarehouseDTO(
                 warehouse.getId(),
                 warehouse.getName(),
-                warehouse.getLocation()
+                warehouse.getLocation(),
+                warehouse.getLatitude(),
+                warehouse.getLongitude()
+
         );
     }
 
     //Convetir WarehouseDTO a Warehouse
-    public Warehouse toEntity(WarehouseDTO warehouseDTO){
+    public static Warehouse toEntity(WarehouseDTO warehouseDTO){
         Warehouse warehouse = new Warehouse();
         warehouse.setId(warehouseDTO.getId());
         warehouse.setName(warehouseDTO.getName());
         warehouse.setLocation(warehouseDTO.getLocation());
+        warehouse.setLatitude(warehouseDTO.getLatitude());
+        warehouse.setLongitude(warehouseDTO.getLongitude());
 
         return warehouse;
     }

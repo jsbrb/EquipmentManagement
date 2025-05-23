@@ -11,12 +11,10 @@
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-<!-- Pasar datos desde Thymeleaf a JavaScript -->
 <script th:inline="javascript">
     let workMarkers = [[${workMarkers}]];
+    let warehouseMarkers = [[${warehouseMarkers}]];
 </script>
-
 <script>
     const map = L.map('map').setView([39.4699, -0.3763], 13);
 
@@ -25,6 +23,14 @@
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+    //Icono personalizado para almacenes
+    const warehouseIcon = L.icon({
+        iconUrl: '/images/warehouse.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    });
+
     // Agrega los marcadores
     workMarkers.forEach(marker => {
         const popupContent = `<strong>${marker.name}</strong><br/>Equipos en uso:<ul>${
@@ -32,6 +38,17 @@
         }</ul>`;
 
         L.marker([marker.lat, marker.lng]).addTo(map).bindPopup(popupContent);
+    });
+
+    // Marcadores de almacenes con icono personalizado
+    warehouseMarkers.forEach(marker => {
+        const popupContent = `<strong>${marker.name}</strong><br/>Equipos disponibles:<ul>${
+            marker.equipments.map(e => `<li>${e}</li>`).join('')
+        }</ul>`;
+
+        L.marker([marker.lat, marker.lng], { icon: warehouseIcon })
+            .addTo(map)
+            .bindPopup(popupContent);
     });
 </script>
 <div th:replace="~{fragments/layout :: footer}"></div>

@@ -18,10 +18,56 @@
             <input type="text" th:field="*{location}" class="form-control" id="location" required>
         </div>
 
+        <div id="map"></div>
+
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a href="/warehouse" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    const map = L.map('map').setView([40.4168, -3.7038], 6);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        map.setView([lat, lon], 13);  // Centrar en la ubicación actual con zoom más cercano
+      }, () => {
+        // Si el usuario no da permiso o hay error, no hacemos nada y queda el centro por defecto
+      });
+    }
+
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Forzar actualización del tamaño para pintar el mapa correctamente
+    map.invalidateSize();
+
+    let marker;
+
+    map.on('click', async function(e) {
+        const lat = e.latlng.lat;
+        const lon = e.latlng.lng;
+
+        if (marker) {
+            marker.setLatLng([lat, lon]);
+        } else {
+            marker = L.marker([lat, lon]).addTo(map);
+        }
+
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+        const data = await response.json();
+
+        if (data && data.display_name) {
+            document.getElementById('location').value = data.display_name;
+        } else {
+            document.getElementById('location').value = `${lat}, ${lon}`;
+        }
+    });
+</script>
 <div th:replace="~{fragments/layout :: footer}"></div>
 </body>
 </html>

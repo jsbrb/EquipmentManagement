@@ -20,4 +20,9 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
     @Query("SELECT e FROM Equipment e LEFT JOIN FETCH e.warehouse")
     List<Equipment> findAllWithWarehouses();
 
+    @Query("SELECT e FROM Equipment e WHERE e.warehouse.id = :warehouseId")
+    List<Equipment> findByWarehouseId(@Param("warehouseId") Long warehouseId);
+
+
+
 }

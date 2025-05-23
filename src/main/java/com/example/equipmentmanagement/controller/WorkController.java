@@ -94,6 +94,7 @@ public class WorkController {
         return "redirect:/work";
     }
 
+    /*
     @GetMapping("/map")
     public String showMap(Model model) {
         List<WorkDTO> works = workService.getAllWorks();
@@ -120,7 +121,7 @@ public class WorkController {
 
         model.addAttribute("workMarkers", workMarkers);
         return "work/map";
-    }
+    }*/
 
 
 
