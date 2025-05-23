@@ -69,7 +69,7 @@ table {
 }
 
 #map {
-  height: 300px;
+  height: 500px; /*Estaba a 300px*/
   width: 100%;
   margin-top: 15px;
   margin-bottom: 15px;
